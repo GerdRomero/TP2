@@ -22,7 +22,7 @@ class Terreno{
 			int tiempoTrasSembrar;
 			bool seCosecho;
 			enteroValido filaPedida;
-			enteroValido columnaPedida;
+			enteroValido columnaPedida;s
 
 	public:
 			Terreno();

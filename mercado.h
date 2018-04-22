@@ -11,19 +11,32 @@
 class Mercado{
 	private:
 			char tipoDeSemillaComprada;
-
-
+			//preciosde terrenos por dificultad;
+			//Podria haber clase terrenos para consulta de precios.
+			int preciosTerrenos[2];
+			int* direccionPreciosTerrenos=&preciosTerrenos;
+			/*Consultas en clase Semilla de precios*/
+			Semilla *tipoSemilla;
 
 	public:
-			/*
-			 * post: Retorna la semilla comprada
+			/* pre: Valor valido en mercado,
+			 * post: Agrega la compra.
 			 */
-			char comprarSemilla()
+			void comprarSemilla(char semiillaAComprar, Semilla *tipoSemilla);
 
-			void comparTerreno();
+			/*pre: Solo consulta a la clase.
+			*post: Agrega terreno al jugador.
+			*/
+			void comprarTerreno(int &direccionPreciosTerrenos);
 
-			void venderTerreno();
+			/*pre: Solo consulta a la clase.
+			*post: Quita terreno al jugador.
+			*/
+			void venderTerreno(int &direccionPreciosTerrenos);
 
+			/*pre: Solo consulta a la clase.
+			*post: Agrega terreno al jugador.
+			*/
 			void comprarCapacidadParaTanqueDeAgua();
 
 			void comprarCapacidadDeAlmacen();
