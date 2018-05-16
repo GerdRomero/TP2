@@ -29,7 +29,7 @@ void Jugador::seguirTurno(){
 	this->finTurno = false;
 }
 
-bool Jugador::finTurno(){
+bool Jugador::noFinalizado(){
 	return this->finTurno;
 }
 
