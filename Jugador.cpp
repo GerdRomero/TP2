@@ -21,9 +21,18 @@ Jugador::Jugador() {
 	agregarTerreno();
 
 }
-void Jugador::finalizarTurno(){
-
+void Jugador::pasarTurno(){
+	this->finturno = false;
 }
+
+void Jugador::seguirTurno(){
+	this->finTurno = false;
+}
+
+bool Jugador::finTurno(){
+	return this->finTurno;
+}
+
 void Jugador::agregarTerreno(){
 
 	pedirPosicion();
