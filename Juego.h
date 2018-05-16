@@ -30,7 +30,7 @@ public:
 	bool finJuego(){
 		return this->estadoGranjeros.finTurno;
 	}
-	void mostrarOpciones(int opcion);
+	void mostrarOpciones();
 
 	virtual ~Juego();
 private:
