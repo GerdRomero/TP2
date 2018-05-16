@@ -27,6 +27,8 @@ public:
 	Jugador();
 	Jugador(int dificultad);
 	void pedirPosicion();
+	bool pasarTurno();
+	bool seguirTurno();
 	ui filaTerreno();
 	ui columnaTerreno();
 	void comprarSemillas();
