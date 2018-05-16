@@ -57,12 +57,34 @@ void Juego::Jugar(){
 		mostrarOpciones(opcionValida());
 
 	}
+}
 
-
+ui Juego::opcionValida(){
+	char opcion;
+	cout <<"Opcion: ";
+	cin>> opcion;
+	while ((int)opcion < 0 && (int)opcion > 5){
+		cout <<"Opcion: ";
+		cin>> opcion;
+	}
+	return ((int)opcion);
 
 }
-void Juego::mostrarOpciones(int opcionMenu){
 
+void  Juego::opciones(){
+	cout<<"********************"<<endl;
+	cout<<"******* MENU *******"<<endl;
+	cout<<"********************"<<endl;
+	cout<<"1)SEMBRAR."<<endl;
+	cout<<"2)REGAR."<<endl;
+	cout<<"3)COSECHAR."<<endl;
+	cout<<"7)PASAR TURNO."<<endl;
+}
+
+	
+void Juego::mostrarOpciones({
+	opciones();
+	int opcionMenu = opcionValida();
 	switch(opcionMenu){
 	case 1:
 		this->jugadorActual->sembrarTerreno();
