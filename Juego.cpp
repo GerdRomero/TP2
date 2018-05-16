@@ -20,7 +20,7 @@ Juego::Juego() {
 	this->jugadorActual=NULL;
 }
 
-void Juego::contarTurnos(){
+void Juego::descontarTurnos(){
 	if(this->estadoGranjeros.finTurno){
 		this->turnosJuego-=1;
 	}
@@ -54,7 +54,7 @@ void Juego::comenzarTurno(){
 void Juego::Jugar(){
 	while(this->jugadorActual->noFinalizado()){
 		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
-		mostrarOpciones(opcionValida());
+		mostrarOpciones();
 
 	}
 }
