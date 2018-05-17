@@ -13,8 +13,8 @@ typedef unsigned short int ui;
 class Juego {
 private:
 	Lista<Jugador*> *jugadores;
-	unsigned int cantJugadores;
-	unsigned int turnosJuego;
+	ui cantJugadores;
+	ui turnosJuego;
 	Jugador *jugadorActual;
 	struct estadoJuego{
 		bool comenzado;
@@ -31,6 +31,8 @@ public:
 		return this->estadoGranjeros.finTurno;
 	}
 	void mostrarOpciones();
+	void opciones();
+	void descontarTurnos();
 
 	virtual ~Juego();
 private:

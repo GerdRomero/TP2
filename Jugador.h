@@ -19,6 +19,7 @@ private:
 	int turnosRestantes;
 	}estado;
 	Lista<Terreno**> *terrenos;
+	ui cantTerrenos;
 	Terreno **terrenoEnJuego;
 	ui posicionTerrenoEnJuego;
 	ui pos[];
@@ -27,13 +28,15 @@ public:
 	Jugador();
 	Jugador(int dificultad);
 	void pedirPosicion();
-	bool pasarTurno();
-	bool seguirTurno();
+	void pasarTurno();
+	void seguirTurno();
 	ui filaTerreno();
 	ui columnaTerreno();
 	void comprarSemillas();
 	void obtenerTerrenoEnJuego(ui posicionTerreno);
+	/*post: cambia finTurno para el jugador*/
 	void finalizarTurno();
+	/*post: regresa atributo finTurno*/
 	bool noFinalizado();
 	/*pre: datos validos ui
 	  post:crea terreno y agrega en lista terrenos */
@@ -62,7 +65,7 @@ public:
 		return this->estado.turnosRestantes;
 	}
 	virtual ~Jugador();
-private:
+
 	Terreno** obtenerTerreno();
 };
 

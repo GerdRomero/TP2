@@ -18,11 +18,12 @@ Jugador::Jugador() {
 	this->terrenoEnJuego=NULL;
 	this->posicionTerrenoEnJuego=0;
 	this->finTurno=false;
+	this->cantTerrenos=0;
 	agregarTerreno();
 
 }
 void Jugador::pasarTurno(){
-	this->finturno = false;
+	this->finTurno=true;
 }
 
 void Jugador::seguirTurno(){
@@ -48,6 +49,16 @@ void Jugador::obtenerTerrenoEnJuego(ui posicionTerreno){
 	this->terrenoEnJuego=this->terrenos->obtener(posicionTerreno);
 
 }
+ui Jugador::terrenoValido(){
+	ui posTerreno;
+	std::cout<<"Ingrese un numero de terreno"<<std::endl;
+	std::cin>>posTerreno;
+	while(posTerreno>this->cantTerrenos|| posTerreno<=0){
+		std::cout<<"Ingrese un numero de terreno"<<std::endl;
+		std::cin>>posTerreno;
+	}
+	return posTerreno;
+}
 
 void Jugador::sembrarTerreno(){}
 void Jugador::regarTerreno(){}
@@ -65,7 +76,10 @@ ui Jugador::columnaTerreno(){
 	return col;
 }
 
+void Jugador::finalizarTurno(){
 
+	this->finTurno=true;
+}
 void Jugador::pedirPosicion(){
 	ui fila, col;
 	std::cout<<"Ingrese fila:"<<"\n";
@@ -90,12 +104,13 @@ Jugador::Jugador(int dificultad){
 			this->estado.creditos=10;
 			this->estado.turnosRestantes=10;
 			break;
-		default:
-			this->estado.cantAgua=0;
-			this->terrenos=NULL;
-			this->terrenoEnJuego=NULL;
-			this->finTurno=false;
-			this->posicionTerrenoEnJuego=0;
+
+		this->estado.cantAgua=0;
+		this->terrenos=NULL;
+		this->terrenoEnJuego=NULL;
+		this->finTurno=false;
+		this->posicionTerrenoEnJuego=0;
+		this->cantTerrenos=0;
 
 		}
 	}

@@ -42,6 +42,11 @@ void Juego::agregarJugadores(int cantidad, int dif){
 Jugador* Juego::obtenerJugador(){
 	return this->jugadorActual;
 }
+
+void Juego::contarTurnos(){
+
+	this->turnosJuego-=1;
+}
 void Juego::comenzarTurno(){
 
 	this->jugadores->iniciarCursor();
@@ -51,6 +56,7 @@ void Juego::comenzarTurno(){
 	}
 	contarTurnos();
 }
+
 void Juego::Jugar(){
 	while(this->jugadorActual->noFinalizado()){
 		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
@@ -61,28 +67,28 @@ void Juego::Jugar(){
 
 ui Juego::opcionValida(){
 	char opcion;
-	cout <<"Opcion: ";
-	cin>> opcion;
-	while ((int)opcion < 0 && (int)opcion > 5){
-		cout <<"Opcion: ";
-		cin>> opcion;
+	std::cout <<"Opcion: ";
+	std::cin>> opcion;
+	while ((int)opcion < 0 || (int)opcion > 5){
+		std::cout <<"Opcion: ";
+		std::cin>> opcion;
 	}
-	return ((int)opcion);
+	return ((ui)opcion);
 
 }
 
 void  Juego::opciones(){
-	cout<<"********************"<<endl;
-	cout<<"******* MENU *******"<<endl;
-	cout<<"********************"<<endl;
-	cout<<"1)SEMBRAR."<<endl;
-	cout<<"2)REGAR."<<endl;
-	cout<<"3)COSECHAR."<<endl;
-	cout<<"7)PASAR TURNO."<<endl;
+	std::cout<<"********************"<<std::endl;
+	std::cout<<"******* MENU *******"<<std::endl;
+	std::cout<<"********************"<<std::endl;
+	std::cout<<"1)SEMBRAR."<<std::endl;
+	std::cout<<"2)REGAR."<<std::endl;
+	std::cout<<"3)COSECHAR."<<std::endl;
+	std::cout<<"7)PASAR TURNO."<<std::endl;
 }
 
 	
-void Juego::mostrarOpciones({
+void Juego::mostrarOpciones(){
 	opciones();
 	int opcionMenu = opcionValida();
 	switch(opcionMenu){
@@ -102,7 +108,9 @@ void Juego::mostrarOpciones({
 		this->jugadorActual->comprarSemillas();
 		break;
 	case 6:
-		this->jugadorActual->avanzarTerreno();
+		/*Cambia pos de terreno a terrenoEnJuego*/
+		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
+
 		break;
 	case 7:
 		this->jugadorActual->finalizarTurno();
