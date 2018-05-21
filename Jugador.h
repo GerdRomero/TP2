@@ -24,6 +24,7 @@ private:
 		Semilla *tipoB;
 		Semilla *tipoC;
 	}cultivos;
+	Semilla *aSembrar;
 	Lista<Terreno**> *terrenos;
 	Terreno **terrenoEnJuego;
 	Almacen *almacen;
@@ -67,6 +68,12 @@ public:
 	void cosecharTerreno();
 	/*post: devuelve un numero de terreno valido en lista terrenos*/
 	ui terrenoValido();
+	/*post: setea Semilla aSembrar deacuerdo al dato ingresado*/
+	void pedirSemillaSembrar();
+	/*post:Muestra info Semillas*/
+	void mostrarInfoSemilla();
+	/*post: Castea un tipo de Semilla existente*/
+	char tipoSemillaValida();
 	int verCreditos(){
 		return this->estado.creditos;
 	};

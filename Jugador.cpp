@@ -31,6 +31,7 @@ void Jugador::cargarDificJugador(ui dificultad){
 	this->estado.creditos=2*N*M;
 	this->estado.cantAgua=N*M;
 	this->estado.turnosRestantes=2*N*M;
+	this->aSembrar=NULL;
 
 	}
 }
@@ -90,7 +91,39 @@ ui Jugador::columnaTerreno(){
 	ui col=this->pos[1];
 	return col;
 }
+void Jugador::mostrarInfoSemilla(){
+	std::cout<<""<<std::endl;
+	std::cout<<""<<std::endl;
+	std::cout<<""<<std::endl;
 
+}
+char Jugador::tipoSemillaValida(){
+	char semillaValida;
+	/*hacer metodo*/
+	return semillaValida;
+}
+void Jugador::pedirSemillaSembrar(){
+	char tipoSemilla;
+	mostrarInfoSemilla();
+	std::cout<<"Ingrese la semilla a sembrar: "<<std::endl;
+	std::cout<<"1- A "<<std::endl;
+	std::cout<<"2- B "<<std::endl;
+	std::cout<<"3- C "<<std::endl;
+	std::cin>>tipoSemilla=tipoSemillaValida();
+	switch(tipoSemilla){
+
+	case 'A':
+		this->aSembrar=this->cultivos.tipoA;
+		break;
+	case 'B':
+		this->aSembrar=this->cultivos.tipoB;
+		break;
+	case 'C':
+		this->aSembrar=this->cultivos.tipoC;
+		break;
+	}
+
+}
 void Jugador::finalizarTurno(){
 
 	this->finTurno=true;
