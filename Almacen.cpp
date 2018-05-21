@@ -7,12 +7,3 @@
 
 #include "Almacen.h"
 
-Almacen::Almacen() {
-	// TODO Auto-generated constructor stub
-
-}
-
-Almacen::~Almacen() {
-	// TODO Auto-generated destructor stub
-}
-

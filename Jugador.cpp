@@ -7,35 +7,50 @@
 
 #include "Jugador.h"
 #include "Terreno.h"
-#include <iostream>
+#include "ArchivosL.h"
+#include "Lista.h"
+#include<iostream>
+#include <string>
+#include <list>
+#define VACIO ""
 
-Jugador::Jugador() {
-	// TODO Auto-generated constructor stub
-	this->estado.cantAgua=10;
-	this->estado.creditos=50;
-	this->estado.turnosRestantes=20;
-	this->terrenos=NULL;
-	this->terrenoEnJuego=NULL;
-	this->posicionTerrenoEnJuego=0;
-	this->finTurno=false;
-	this->cantTerrenos=0;
-	agregarTerreno();
 
-}
-void Jugador::pasarTurno(){
-	this->finTurno=true;
+void Jugador::cargarDificJugador(ui dificultad){
+	ui N,M;
+	switch(dificultad){
+	case 1:
+		N=2, M=2;
+		break;
+	case 2:
+		N=3, M=3;
+		break;
+	case 3:
+		N=4, M=4;
+		break;
+	agregarTerreno(N,M);
+	this->estado.creditos=2*N*M;
+	this->estado.cantAgua=N*M;
+	this->estado.turnosRestantes=2*N*M;
+
+	}
 }
 
-void Jugador::seguirTurno(){
-	this->finTurno = false;
-}
+
 
 bool Jugador::noFinalizado(){
 	return this->finTurno;
 }
 
+void Jugador::agregarTerreno(ui fil, ui col){
+	//pedirPosicion();
+	ui fila=this->pos[0]||fil;
+	ui columna=this->pos[1]||col;
+	Terreno ** terreno = new Terreno*[fila];
+	for( ui col=0; col<fila; col++ )
+	  terreno[col] = new Terreno[columna];
+	this->terrenos->agregar(terreno);
+}
 void Jugador::agregarTerreno(){
-
 	pedirPosicion();
 	ui fila=this->pos[0];
 	ui columna=this->pos[1];
@@ -47,7 +62,6 @@ void Jugador::agregarTerreno(){
 
 void Jugador::obtenerTerrenoEnJuego(ui posicionTerreno){
 	this->terrenoEnJuego=this->terrenos->obtener(posicionTerreno);
-
 }
 ui Jugador::terrenoValido(){
 	ui posTerreno;
@@ -63,6 +77,7 @@ ui Jugador::terrenoValido(){
 void Jugador::sembrarTerreno(){}
 void Jugador::regarTerreno(){}
 void Jugador::cosecharTerreno(){}
+
 Terreno**Jugador::obtenerTerreno(){
 	return this->terrenoEnJuego;
 
@@ -90,31 +105,57 @@ void Jugador::pedirPosicion(){
 	this->pos[1]=col;
 
 }
-Jugador::Jugador(int dificultad){
-		switch(dificultad){
-		case 1:
-			this->estado.creditos=30;
-			this->estado.turnosRestantes=14;
-			break;
-		case 2:
-			this->estado.creditos=20;
-			this->estado.turnosRestantes=12;
-			break;
-		case 3:
-			this->estado.creditos=10;
-			this->estado.turnosRestantes=10;
-			break;
+Jugador::Jugador(ui dificultad){
+	this->terrenos=NULL;
+	this->almacen=NULL;
+	this->posicionTerrenoEnJuego=0;
+	this->finTurno=false;
+	this->cantTerrenos=0;
+	this->terrenos=NULL;
+	this->almacen=NULL;
+	cargarDatos();
+	cargarDificJugador(dificultad);
+}
+void Jugador::cargarDatos(){
+	ArchivosL cultivos;
+	cultivos.pedirNombreDeArchivo();
+	cultivos.abrirArchivoLectura();
+	std::string linea=cultivos.leerLinea();
+	while(linea!=VACIO){
+		Lista<string>datosCultivo;
+		datosLista(linea, datosCultivo);
+		cargarCultivosJugador(datosCultivo);
+	}
+}
 
-		this->estado.cantAgua=0;
-		this->terrenos=NULL;
-		this->terrenoEnJuego=NULL;
-		this->finTurno=false;
-		this->posicionTerrenoEnJuego=0;
-		this->cantTerrenos=0;
+void Jugador::cargarCultivosJugador(Lista<std::string>&datos){
+	std::string tipoSemilla=datos.obtener(1);
+	if(tipoSemilla=="A"){
+		Semilla tipoA(datos);
+		this->cultivos.tipoA=&tipoA;
+	}
+	else if(tipoSemilla=="B"){
+		Semilla tipoB(datos);
+		this->cultivos.tipoB=&tipoB;
+	}
+	else{
+		Semilla tipoC(datos);
+		this->cultivos.tipoC=&tipoC;
 
+	}
+}
+void Jugador::datosLista(std::string linea,Lista<std::string>&datos){
+	std::string dato;
+	for(ui i=0;linea.length();i++){
+		if(linea[i]!=','){
+			dato+=linea[i];
+		}
+		else{
+			datos.agregar(dato);
+			dato="";
 		}
 	}
-
+}
 Jugador::~Jugador() {
 	// TODO Auto-generated destructor stub
 }

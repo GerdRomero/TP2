@@ -4,27 +4,29 @@
  *  Created on: 17 may. 2018
  *      Author: cristian
  */
-
+#include "Semilla.h"
 #ifndef SRC_ALMACEN_H_
 #define SRC_ALMACEN_H_
+typedef unsigned short int ui;
 
 class Almacen{
 	private:
-			char tipoDeSemilla;
-			char tipoDeCosecha;
-			int cantTipoDeSemilla;
-			int cantTipoDeCosecha;
-			int espacioDisponible;
-			int espacioTotal;
+			struct{
+				ui tipoA;
+				ui tipoB;
+				ui tipoC;
+			}*cosechas;
 
-			typedef unsigned int tamaño;
-
+			Semilla *tipoA;
+			Semilla *tipoB;
+			Semilla *tipoC;
+			ui tam;
 
 	public:
 
 			Almacen();
 
-			Almacen(tamaño tam);
+			Almacen(ui tam);
 
 			//Pre: Ingrese un tipo de cosecha valido
 			//Post: Devuelve la cantidad disponible de la cosecha
@@ -46,6 +48,9 @@ class Almacen{
 			//Post: Devuelve la cantidad de espacio disponible
 			int cantEspacioDisponible();
 
+public:
+			~Almacen();
+			void haySemilla();
 
 };
 

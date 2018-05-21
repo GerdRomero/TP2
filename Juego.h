@@ -13,9 +13,9 @@ typedef unsigned short int ui;
 class Juego {
 private:
 	Lista<Jugador*> *jugadores;
+	Jugador *jugadorActual;
 	ui cantJugadores;
 	ui turnosJuego;
-	Jugador *jugadorActual;
 	struct estadoJuego{
 		bool comenzado;
 		bool jugando;
@@ -24,23 +24,34 @@ private:
 	}estadoGranjeros;
 public:
 	Juego();
-	void agregarJugadores(int cantidad, int dificultad);
+	/*pre: cantidad de jugadores valida
+	 * post: agrega jugadores en lista*/
+	void agregarJugadores(ui cantidad);
+	/*pre:Debe haber minimo un jugador, o llamar antes a agregarJugadores()
+	 * post:inicia cursor en lista jugadores, avanza y setea jugadorActual*/
 	void comenzarTurno();
-	void Jugar();
-	bool finJuego(){
-		return this->estadoGranjeros.finTurno;
-	}
-	void mostrarOpciones();
-	void opciones();
-	void descontarTurnos();
-
 	virtual ~Juego();
 private:
-	void pasarTurno();
-	ui opcionValida();
-	Jugador* obtenerJugador();
-
+	/*pre:Debe invocarse agregarJugadores() antes
+	 * post: inicia el juego con jugadorActual junto a las subrutinas en private*/
+	void Jugar();
+	/*post: devuelve mientras queden turnos para jugar*/
+	bool finJuego();
+	/*post:Descuenta turnos al juego y setea su fin si ya no quedan*/
 	void contarTurnos();
+	/*pre:Debe haberse llamado a agregarJugadores() y luego a comenzarTurno()
+	 * post: muestra acciones posibles al jugador*/
+	void mostrarOpciones();
+	/*post: imprime opciones disponibles*/
+	void menu();
+	ui opcionValida();
+
+	/*post: devuelve dificultad valida*/
+	ui pedirDificultad();
+	void mostrarDificultades();
+
+	/*post:devuelve jugadorActual, solo para hacer pruebas*/
+	Jugador* obtenerJugador();
 
 };
 
