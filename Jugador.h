@@ -84,11 +84,14 @@ public:
 	int verTurnos(){
 		return this->estado.turnosRestantes;
 	}
+	void terrenosSembrados();
+	
 	virtual ~Jugador();
 private:
 	/*post:leé un archivo de cultivos, crea una lista y setea en tipos de semillas a usar
 	 * (subrutinas datosLista() y cargarCultivosJugador()*/
 	void cargarDatos();
+	void actualizar();
 	ui filaTerreno();
 	ui columnaTerreno();
 	/*pre:Se llama luego de invocar al contructor, recibe una linea de texto
