@@ -52,6 +52,8 @@ private:
 
 	/*post:devuelve jugadorActual, solo para hacer pruebas*/
 	Jugador* obtenerJugador();
+	/* post: llama al metodo del JugadorActual terrenoSenbrados	
+	void revisarEstados();
 
 };
 
