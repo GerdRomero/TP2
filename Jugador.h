@@ -12,13 +12,14 @@
 #include "Almacen.h"
 #include "Semilla.h"
 typedef unsigned short int ui;
+struct Intervalo{
+	ui creditos;
+	ui agua;
+	ui turnosRestantes;
+	};
 class Jugador {
 private:
-	struct estadoJugador{
-	int creditos;
-	int cantAgua;
-	int turnosRestantes;
-	}estado;
+	Intervalo cantidad;
 	struct Semillas{
 		Semilla *tipoA;
 		Semilla *tipoB;
