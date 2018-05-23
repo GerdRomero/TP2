@@ -105,7 +105,9 @@ void  Juego::menu(){
 	std::cout<<"6)CAMBIAR TERRENO EN JUEGO."<<std::endl;
 	std::cout<<"7)PASAR TURNO."<<std::endl;
 }
-
+void Juego::revisarEstados(){
+	this->jugadorActual->terrenosSembrados();
+}
 	
 void Juego::mostrarOpciones(){
 	menu();
@@ -133,6 +135,7 @@ void Juego::mostrarOpciones(){
 
 		break;
 	case 7:
+		revisarEstados();
 		this->jugadorActual->finalizarTurno();
 
 		break;
