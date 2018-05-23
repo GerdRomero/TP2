@@ -75,9 +75,30 @@ ui Jugador::terrenoValido(){
 	return posTerreno;
 }
 
-void Jugador::sembrarTerreno(){}
-void Jugador::regarTerreno(){}
-void Jugador::cosecharTerreno(){}
+void Jugador::sembrarTerreno(){
+	pedirPosicion();
+	if (!(this->terrenoEnJuego[this->pos[0]][this->pos[1]].estaSembrada())){
+		this->terrenoEnJuego[this->pos[0]][this->pos[1]].cambiarEstadoDeParcelaSembrada(semilla);
+		this->cantidad.creditos = (this->cantidad.creditos - this->semilla->obetenerCosto());
+	}
+}
+void Jugador::regarTerreno(){
+	pedirPosicion();
+	if (this->terrenoEnJuego[this->pos[0]][this->pos[1]].estaSembrada()){
+		this->cantidad.agua = this->cantidad.agua - semilla->obtenerCostoDeAgua();
+		this->terrenoEnJuego[pos[0]][pos[1]].aumentarNumeroDeRiegos();
+	}
+}
+
+void Jugador::cosecharTerreno(){
+	pedirPosicion();
+	if((this->terrenoEnJuego[pos[0]][pos[1]].estaSembrada()) &&
+		(this->terrenoEnJuego[pos[0]][pos[1]].regoCorrectamente())){
+
+		this->cantidad.creditos -= this->terrenoEnJuego[pos[0]][pos[1]].obtenerRentabilidad();
+		this->terrenoEnJuego[this->pos[0]][this->pos[1]].cambiarACosechado();
+	}
+}
 
 Terreno**Jugador::obtenerTerreno(){
 	return this->terrenoEnJuego;
