@@ -24,6 +24,8 @@ class Terreno{
 	private:
 	/*Ubicar estos atributos en un struct Parcela, cambiar el constructor*/
 			IntervaloParcela Parcela;
+			ui cantidadDeFilas;
+			ui cantidadDecolumas;
 			bool Sembrada;
 			bool parcelaPodrida;
 			bool seCosecho;
@@ -32,6 +34,8 @@ class Terreno{
 
 	public:
 			Terreno();
+			ui obtenerCantidadDeFilas();
+			ui obtenerCantidadDeColumnas();
 			Terreno** crearTerreno(ui fila, ui columna);
 			/*
 			 * post: Obtiene la fila y la columna
