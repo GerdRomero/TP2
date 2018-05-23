@@ -11,17 +11,24 @@
 #define VACIA (char) 35
 typedef unsigned short int ui;
 
+enum Estado{vacia,sembrada,reposo};
+struct IntervaloParcela{
+	ui rentabilidad;
+	ui recuperacion;
+	ui tiempoHastaCosecha;
+	ui numeroDeRiegos;
+	ui tiempoTrasSiembra;
+	char tipo;
+};
 class Terreno{
 	private:
 	/*Ubicar estos atributos en un struct Parcela, cambiar el constructor*/
-			char estado;
-			int turnosParaCosechar;
-			int turnosDeRecuperacion;
-			bool estaSembrada;
+			IntervaloParcela Parcela;
+			bool Sembrada;
 			bool parcelaPodrida;
-			int rentabilidad;
 			bool seCosecho;
-			Terreno *terreno;
+			Estado ESTADO;
+			Terreno **terreno;
 
 	public:
 			Terreno();
@@ -30,29 +37,38 @@ class Terreno{
 			 * post: Obtiene la fila y la columna
 			 */
 			void pedirParcela();
-			char obtenerEstado(){
-				return this->estado;
-			}
+			ui obtenerRentabilidad();
 
-	private:
+			void aumentarNumeroDeRiegos();
+
+			void cambiarACosechado();
+
+			void cambiarEstadoDeParcelaSembrada(Semillas * semilla);
 			/*
-			 * post:Devuelve true si la parcela esta vacia o
+			 * post:Devuelve true si la parcela esta llena o
 			 * 	   false en caso contrario.
 			 */
-			bool verificoSiSePuedeSembrar();
-
+			bool estaSembrada();
 			/*
-			 * post:Retorna true si la parcela esta sembrada
-			 *      o false en caso contrario.
+			 * post:Devuelve true si los numeroDeRieegos son
+			 * 	   iguales al tiempoHastaCosechar.
 			 */
-			bool verificoSiSePuedeRegar();
+			bool regoCorrectamente();
+			
+			void actualizando();
 
+			void mostrarTerreno();
+
+	private:
+			void recuperarParcela();
+
+			void decrementarRecuperacion();
+
+			void incrementarTiempoTrasSiembra();
 			/*
-			 * post: Retorna true si numeroDeRiegos == tiempoParaCosechar
-			 * 		 o false en caso contario
+			 * post: Pudre (this->parcelaPodrida = true) o Recupera la Parcela.
 			 */
-
-			bool verificoSiSePuedeCosechar();
+			void podrirParcela();
 
 };
 
