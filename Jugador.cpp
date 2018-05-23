@@ -210,7 +210,27 @@ void Jugador::datosLista(std::string linea,Lista<std::string>&datos){
 		}
 	}
 }
+
+void Jugador::actualizar(){
+	ui fila = this->terrenoEnJuego[0][0].obtenerCantidadDeFilas();
+	ui columna = this->terrenoEnJuego[0][0].obtenerCantidadDeColumnas();
+	for (ui i= 0; i<= fila;i++){
+		for (ui j=0; j<= columna ; j++){
+			this->terrenoEnJuego[i][j].actualizando();
+		}
+	}
+}
+
+void Jugador::terrenosSembrados(){
+	this->terrenos->iniciarCursor();
+	while(this->terrenos->avanzarCursor()){
+		this->terrenoEnJuego = this->terrenos->obtenerCursor();
+		actualizar();
+	}
+}
+
 Jugador::~Jugador() {
 	// TODO Auto-generated destructor stub
 }
+
 
