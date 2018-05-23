@@ -22,6 +22,14 @@ Terreno::Terreno() {
 
 }
 
+ui Terreno::obtenerCantidadDeFilas(){
+	return this->cantidadDeFilas;
+}
+
+ui Terreno::obtenerCantidadDeColumnas(){
+	return this->cantidadDecolumas;
+}
+
 Terreno** Terreno::crearTerreno(ui fila, ui columna){
 	Terreno ** terreno = new Terreno*[fila];
 	for( ui col=0; col<fila; col++ )
