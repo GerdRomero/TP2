@@ -5,22 +5,29 @@
  *      Author: cristian
  */
 #include "Semilla.h"
+#include <string>
 #ifndef SRC_ALMACEN_H_
 #define SRC_ALMACEN_H_
 typedef unsigned short int ui;
+struct Cosecha{
+	std::string destino;
+	ui cant;
+	ui costo;
+	char tipo;
+};
+struct Cosechas{
+				Cosecha tipoA;
+				Cosecha tipoB;
+				Cosecha tipoC;
+			};
+
 
 class Almacen{
 	private:
-			struct{
-				ui tipoA;
-				ui tipoB;
-				ui tipoC;
-			}*cosechas;
-
-			Semilla *tipoA;
-			Semilla *tipoB;
-			Semilla *tipoC;
+			Cosechas *cosechas;
 			ui tam;
+			ui espacioDisponible;
+			Cosecha *cosechaEnviar;
 
 	public:
 
@@ -30,28 +37,33 @@ class Almacen{
 
 			//Pre: Ingrese un tipo de cosecha valido
 			//Post: Devuelve la cantidad disponible de la cosecha
-			int cantidadDeCosecha(char tipoCosecha);
-
-			//Pre: Idem
-			//Post: Idem
-			int cantidadDeSemilla(char tipoSemilla);
+			ui cantidadDeCosecha(char tipoCosecha);
 
 			//Pre: Ingresar cantidad valida de cosecha
 			//Post: -
-			void guardarCosecha(int cantCosecha);
-
-			//Pre: Idem
-			//Post: -
-			void guardarSemilla(int cantSemilla);
-
+			void guardarCosecha(ui cantCosecha);
 			//Pre: -
 			//Post: Devuelve la cantidad de espacio disponible
-			int cantEspacioDisponible();
-
-public:
+			ui cantEspacioDisponible();
+			/*post:
+			 * extiende el tamño del almacen*/
+			void extender(ui tamanio);
+			void leerDestino();
+			void guardarCosecha(ui cantCosecha,  char tipoCosecha);
+			ui prepararCosecha(ui cantCosecha);
+			char obtenerTipoCosechaPreparada(){
+				return this->cosechaEnviar->tipo;
+			}
+			void vaciarCosecha(){
+				this->cosechaEnviar->cant=0;
+			}
+			ui elegirCosecha();
 			~Almacen();
-			void haySemilla();
-
+	private:
+			void elegirCosechaGuardar(ui cantCosecha, char tipoCosecha);
+			void cargarDestinosCosechas(Lista<std::string>&datos);
+			ui opcionValida();
+			ui obtenerGanancia(ui cantEnviada);
 };
 
 

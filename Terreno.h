@@ -10,7 +10,7 @@
 #define TERRENO_H_
 #define VACIA (char) 35
 typedef unsigned short int ui;
-
+#include "Semilla.h"
 enum Estado{vacia,sembrada,reposo};
 struct IntervaloParcela{
 	ui rentabilidad;
@@ -21,6 +21,7 @@ struct IntervaloParcela{
 	char tipo;
 };
 class Terreno{
+	private:
 	private:
 	/*Ubicar estos atributos en un struct Parcela, cambiar el constructor*/
 			IntervaloParcela Parcela;
@@ -47,7 +48,7 @@ class Terreno{
 
 			void cambiarACosechado();
 
-			void cambiarEstadoDeParcelaSembrada(Semillas * semilla);
+			void cambiarEstadoDeParcelaSembrada(Semilla* aSembrar);
 			/*
 			 * post:Devuelve true si la parcela esta llena o
 			 * 	   false en caso contrario.
@@ -58,10 +59,10 @@ class Terreno{
 			 * 	   iguales al tiempoHastaCosechar.
 			 */
 			bool regoCorrectamente();
-			
+
 			void actualizando();
 
-			void mostrarTerreno();
+			void mostrarTerreno(Terreno **terreno);
 
 	private:
 			void recuperarParcela();
@@ -73,7 +74,6 @@ class Terreno{
 			 * post: Pudre (this->parcelaPodrida = true) o Recupera la Parcela.
 			 */
 			void podrirParcela();
-
 };
 
 #endif /* TERRENO_H_ */

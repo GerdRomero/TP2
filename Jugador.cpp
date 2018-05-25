@@ -6,15 +6,24 @@
  */
 
 #include "Jugador.h"
-#include "Terreno.h"
 #include "ArchivosL.h"
-#include "Lista.h"
 #include<iostream>
 #include <string>
-#include <list>
 #define VACIO ""
 
+Jugador::Jugador(ui dificultad){
+	this->terrenos=NULL;
+	this->posicionTerrenoEnJuego=0;
+	this->finTurno=false;
+	this->cantTerrenos=0;
+	this->terrenos=NULL;
+	this->mercado=NULL;
+	cargarDatos();
+	cargarDificJugador(dificultad);
+	Mercado mercado (cultivos);
+	this->mercado=&mercado;
 
+}
 void Jugador::cargarDificJugador(ui dificultad){
 	ui N,M;
 	switch(dificultad){
@@ -28,15 +37,139 @@ void Jugador::cargarDificJugador(ui dificultad){
 		N=4, M=4;
 		break;
 	agregarTerreno(N,M);
+	Almacen almacen(2*(N+M));
+	this->almacen=&almacen;
 	this->estado.creditos=2*N*M;
 	this->estado.cantAgua=N*M;
 	this->estado.turnosRestantes=2*N*M;
 	this->aSembrar=NULL;
-
 	}
 }
+void Jugador::mostrarInfo(){
+	/*Mostrar info productos (Vale por mostrar info semillas con punteros)*/
+	std::cout<<""<<std::endl;
+	std::cout<<""<<std::endl;
+	std::cout<<""<<std::endl;
 
 
+}
+ui Jugador::opcionValida(ui min, ui max){
+	ui opcion;
+	std::cout<<"Ingrese una opcion: "<<std::endl;
+	std::cin>>opcion;
+	if(!isdigit(opcion)|| opcion>max|| opcion<min){
+		opcionValida(min, max);
+	}
+	return opcion;
+}
+void Jugador::venderTerreno(){
+	ui terrenoAVender=terrenoValido();
+	Terreno **terrenoACotizar=this->terrenos->obtener(terrenoAVender);
+	ui ganancia=this->mercado->cotizarTerreno(terrenoACotizar);
+	this->terrenos->remover(terrenoAVender);
+	this->estado.creditos+=ganancia;
+}
+void Jugador::comprarSemillas(){
+	std::cout<<"Ingrese el tipo de cultivo a comprar: "<<std::endl;
+	mostrarInfo();
+	ui cantidad;
+	char tipoSemilla=tipoSemillaValida();
+	std::cout<<"Cuantas semillas desea comprar: "<<std::endl;
+	std::cin>>cantidad;
+	ui costo=this->mercado->ventaSemillas(tipoSemilla, cantidad);
+	if(hayCreditos(costo)){
+		this->estado.creditos-=costo;
+		agregarCultivos(tipoSemilla, cantidad);
+	}else{
+		std::cout<<"No hay creditos suficientes"<<std::endl;
+	}
+}
+void Jugador::agregarCultivos(char tipoSemilla,ui cantidad){
+	//char a=this->cultivos->tipoA->obtenerTipo();
+	switch(tipoSemilla){
+		case 'A':
+			this->cultivos->tipoA->agregar(cantidad);
+			break;
+		case 'B':
+			this->cultivos->tipoB->agregar(cantidad);
+			break;
+		case 'C':
+			this->cultivos->tipoC->agregar(cantidad);
+			break;
+		}
+}
+void Jugador::comprarTerreno(){
+	pedirPosicion();
+	/*falta tomar el caso de pedir dimension por dificultad*/
+	ui fila=this->pos[0];
+	ui col=this->pos[1];
+	ui costo=this->mercado->venderTerreno(fila, col);
+	if(hayCreditos(costo)){
+		agregarTerreno(fila,col);
+		this->estado.creditos-=costo;
+	}else{
+		std::cout<<"No hay creditos suficientes"<<std::endl;
+	}
+}
+void Jugador::comprarCapacAlmacen(){
+	/*porsu faltan metodos de comprobacion*/
+	ui capac;
+	std::cout<<"Ingrese la capacidad a agregar: "<<std::endl;
+	cin>>capac;
+	/*Multiplicar costo por dificultad*/
+	ui costo=this->mercado->venderTamanioAlmacen(capac);
+	if(hayCreditos(costo)){
+		this->almacen->extender(capac);
+		this->estado.creditos-=costo;
+	}else{
+		std::cout<<"No hay creditos suficientes"<<std::endl;
+	}
+}
+/*Metodo a practicar uso en todas las compras*/
+bool Jugador::hayCreditos(ui costoCompra){
+	ui comparacion=this->estado.creditos;
+	return (comparacion-costoCompra)>=0;
+}
+
+void Jugador::venderCosecha(){
+	ui costo, cantAEnviar;
+	this->almacen->leerDestino();
+	cantAEnviar=this->almacen->elegirCosecha();
+	costo=this->almacen->prepararCosecha(cantAEnviar);
+	if(hayCreditos(costo)){
+		char cosecha=this->almacen->obtenerTipoCosechaPreparada();
+		ui ganancia=this->mercado->venderCosecha(cosecha,cantAEnviar);
+		this->estado.creditos+=ganancia;
+		this->almacen->vaciarCosecha();
+	}
+	else{
+		std::cout<<"No hay creditos suficientes"<<std::endl;
+	}
+}
+void Jugador::mostrarMenuCompras(){
+	/*imprimir opciones de compra en comprar()*/
+}
+void Jugador::comprar(){
+	mostrarMenuCompras();
+	ui opcion=opcionValida(1,5);
+	switch(opcion){
+	case 1:
+		comprarSemillas();
+		break;
+	case 2:
+		venderCosecha();
+		break;
+	case 3:
+		comprarTerreno();
+		break;
+	case 4:
+		venderTerreno();
+		break;
+	case 5:
+		comprarCapacAlmacen();
+		break;
+	}
+}
 
 bool Jugador::noFinalizado(){
 	return this->finTurno;
@@ -69,7 +202,8 @@ ui Jugador::terrenoValido(){
 	std::cout<<"Ingrese un numero de terreno"<<std::endl;
 	std::cin>>posTerreno;
 	while(posTerreno>this->cantTerrenos|| posTerreno<=0){
-		std::cout<<"Ingrese un numero de terreno"<<std::endl;
+		std::cout<<"Ingrese un numero de terreno valido: "<<std::endl;
+		std::cout<<"Entre"<<"1 y "<<this->cantTerrenos<<std::endl;
 		std::cin>>posTerreno;
 	}
 	return posTerreno;
@@ -77,26 +211,32 @@ ui Jugador::terrenoValido(){
 
 void Jugador::sembrarTerreno(){
 	pedirPosicion();
-	if (!(this->terrenoEnJuego[this->pos[0]][this->pos[1]].estaSembrada())){
-		this->terrenoEnJuego[this->pos[0]][this->pos[1]].cambiarEstadoDeParcelaSembrada(semilla);
-		this->cantidad.creditos = (this->cantidad.creditos - this->semilla->obetenerCosto());
+	ui fil=filaTerreno();
+	ui col=columnaTerreno();
+	if (!(this->terrenoEnJuego[fil][col].estaSembrada())){
+		this->terrenoEnJuego[fil][col].cambiarEstadoDeParcelaSembrada(this->aSembrar);
+		//this->cantidad.creditos = (this->cantidad.creditos - this->aSembrar->precio());
 	}
 }
+
 void Jugador::regarTerreno(){
 	pedirPosicion();
-	if (this->terrenoEnJuego[this->pos[0]][this->pos[1]].estaSembrada()){
-		this->cantidad.agua = this->cantidad.agua - semilla->obtenerCostoDeAgua();
-		this->terrenoEnJuego[pos[0]][pos[1]].aumentarNumeroDeRiegos();
+	ui fil=filaTerreno();
+	ui col=columnaTerreno();
+	if (this->terrenoEnJuego[fil][col].estaSembrada()){
+		this->estado.cantAgua-=this->aSembrar->cantidadAguaTurno();
+		//this->cantidad.agua = this->cantidad.agua - this->aSembrar->cantidadAguaTurno();
+		this->terrenoEnJuego[fil][col].aumentarNumeroDeRiegos();
 	}
 }
-
 void Jugador::cosecharTerreno(){
 	pedirPosicion();
-	if((this->terrenoEnJuego[pos[0]][pos[1]].estaSembrada()) &&
-		(this->terrenoEnJuego[pos[0]][pos[1]].regoCorrectamente())){
-
-		this->cantidad.creditos -= this->terrenoEnJuego[pos[0]][pos[1]].obtenerRentabilidad();
-		this->terrenoEnJuego[this->pos[0]][this->pos[1]].cambiarACosechado();
+	ui fil=filaTerreno();
+	ui col=columnaTerreno();
+	if((this->terrenoEnJuego[fil][col].estaSembrada()) &&
+		(this->terrenoEnJuego[fil][col].regoCorrectamente())){
+		//this->estado.creditos += this->terrenoEnJuego[fil][col].obtenerRentabilidad();
+		this->terrenoEnJuego[fil][col].cambiarACosechado();
 	}
 }
 
@@ -113,37 +253,42 @@ ui Jugador::columnaTerreno(){
 	return col;
 }
 void Jugador::mostrarInfoSemilla(){
+	/*Vale por info con punteros*/
 	std::cout<<""<<std::endl;
 	std::cout<<""<<std::endl;
 	std::cout<<""<<std::endl;
-
 }
 char Jugador::tipoSemillaValida(){
 	char semillaValida;
-	/*hacer metodo*/
+	std::cout<<"Ingrese un tipo de cultivo"<<std::endl;
+	std::cin>>semillaValida;
+	if(!isalpha(semillaValida) ){
+		std::cout<<"Ingrese una opcion valida de semilla"<<std::endl;
+	}
 	return semillaValida;
 }
 void Jugador::pedirSemillaSembrar(){
 	char tipoSemilla;
 	mostrarInfoSemilla();
-	std::cout<<"Ingrese la semilla a sembrar: "<<std::endl;
-	std::cout<<"1- A "<<std::endl;
+	std::cout<<"Ingrese el cultivo a sembrar: "<<std::endl;
+	std::cout<<"1- "<<this->cultivos->tipoA->obtenerTipo()<<std::endl;
 	std::cout<<"2- B "<<std::endl;
 	std::cout<<"3- C "<<std::endl;
-	std::cin>>tipoSemilla=tipoSemillaValida();
+	tipoSemilla=tipoSemillaValida();
+	elegirSemilla(tipoSemilla);
+}
+void Jugador::elegirSemilla(char tipoSemilla){
 	switch(tipoSemilla){
-
 	case 'A':
-		this->aSembrar=this->cultivos.tipoA;
+		this->aSembrar=this->cultivos->tipoA;
 		break;
 	case 'B':
-		this->aSembrar=this->cultivos.tipoB;
+		this->aSembrar=this->cultivos->tipoB;
 		break;
 	case 'C':
-		this->aSembrar=this->cultivos.tipoC;
+		this->aSembrar=this->cultivos->tipoC;
 		break;
 	}
-
 }
 void Jugador::finalizarTurno(){
 
@@ -157,27 +302,16 @@ void Jugador::pedirPosicion(){
 	std::cout<<"Ingrese columna:"<<"\n";
 	std::cin>>col;
 	this->pos[1]=col;
+}
 
-}
-Jugador::Jugador(ui dificultad){
-	this->terrenos=NULL;
-	this->almacen=NULL;
-	this->posicionTerrenoEnJuego=0;
-	this->finTurno=false;
-	this->cantTerrenos=0;
-	this->terrenos=NULL;
-	this->almacen=NULL;
-	cargarDatos();
-	cargarDificJugador(dificultad);
-}
 void Jugador::cargarDatos(){
 	ArchivosL cultivos;
 	cultivos.pedirNombreDeArchivo();
 	cultivos.abrirArchivoLectura();
 	std::string linea=cultivos.leerLinea();
 	while(linea!=VACIO){
-		Lista<string>datosCultivo;
-		datosLista(linea, datosCultivo);
+		Lista<std::string>datosCultivo;
+		cultivos.datosLista(linea, datosCultivo);
 		cargarCultivosJugador(datosCultivo);
 	}
 }
@@ -186,51 +320,21 @@ void Jugador::cargarCultivosJugador(Lista<std::string>&datos){
 	std::string tipoSemilla=datos.obtener(1);
 	if(tipoSemilla=="A"){
 		Semilla tipoA(datos);
-		this->cultivos.tipoA=&tipoA;
+		this->cultivos->tipoA=&tipoA;
 	}
 	else if(tipoSemilla=="B"){
 		Semilla tipoB(datos);
-		this->cultivos.tipoB=&tipoB;
+		this->cultivos->tipoB=&tipoB;
+	}
+	else if(tipoSemilla=="C"){
+		Semilla tipoC(datos);
+		this->cultivos->tipoC=&tipoC;
 	}
 	else{
-		Semilla tipoC(datos);
-		this->cultivos.tipoC=&tipoC;
-
+		std::cout<<"No se cargaron los cultivos..."<<std::endl;
 	}
 }
-void Jugador::datosLista(std::string linea,Lista<std::string>&datos){
-	std::string dato;
-	for(ui i=0;linea.length();i++){
-		if(linea[i]!=','){
-			dato+=linea[i];
-		}
-		else{
-			datos.agregar(dato);
-			dato="";
-		}
-	}
-}
-
-void Jugador::actualizar(){
-	ui fila = this->terrenoEnJuego[0][0].obtenerCantidadDeFilas();
-	ui columna = this->terrenoEnJuego[0][0].obtenerCantidadDeColumnas();
-	for (ui i= 0; i<= fila;i++){
-		for (ui j=0; j<= columna ; j++){
-			this->terrenoEnJuego[i][j].actualizando();
-		}
-	}
-}
-
-void Jugador::terrenosSembrados(){
-	this->terrenos->iniciarCursor();
-	while(this->terrenos->avanzarCursor()){
-		this->terrenoEnJuego = this->terrenos->obtenerCursor();
-		actualizar();
-	}
-}
-
 Jugador::~Jugador() {
 	// TODO Auto-generated destructor stub
 }
-
 

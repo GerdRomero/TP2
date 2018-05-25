@@ -6,7 +6,6 @@
  */
 
 #include "Terreno.h"
-
 Terreno::Terreno() {
 	this->Sembrada=false;
 	this->parcelaPodrida=false;
@@ -19,7 +18,8 @@ Terreno::Terreno() {
 	this->Parcela.tiempoHastaCosecha = 0;
 	this->Parcela.tiempoTrasSiembra = 0;
 	this->ESTADO = vacia;
-
+	this->cantidadDeFilas = 0;
+	this->cantidadDecolumas = 0;
 }
 
 ui Terreno::obtenerCantidadDeFilas(){
@@ -31,12 +31,14 @@ ui Terreno::obtenerCantidadDeColumnas(){
 }
 
 Terreno** Terreno::crearTerreno(ui fila, ui columna){
+	this->cantidadDeFilas = fila;
+	this->cantidadDecolumas = columna;
 	Terreno ** terreno = new Terreno*[fila];
 	for( ui col=0; col<fila; col++ )
 	  terreno[col] = new Terreno[columna];
-
 	return terreno;
 }
+
 
 bool Terreno::estaSembrada(){
 	return(!((this->ESTADO == vacia) && !(this->parcelaPodrida)));
@@ -98,14 +100,33 @@ void Terreno::aumentarNumeroDeRiegos(){
 	this->Parcela.numeroDeRiegos++;
 }
 
-void Terreno::cambiarEstadoDeParcelaSembrada(Semillas * semilla){
-	this->Parcela.rentabilidad = semilla->obtenerRentabilidad();
-	this->Parcela.recuperacion = semilla->obtenerRecuperacion();
-	this->Parcela.tiempoHastaCosecha = semilla->obtenertiempoHastaCosecha();
+void Terreno::cambiarEstadoDeParcelaSembrada(Semilla * aSembrar){
+	this->Parcela.rentabilidad = aSembrar->ganancia();
+	this->Parcela.recuperacion = aSembrar->turnosRecuperacion();
+	this->Parcela.tiempoHastaCosecha = aSembrar->turnosCosecha();
 	this->Sembrada = true;
 	this->ESTADO = sembrada;
 	this->Parcela.numeroDeRiegos = 0;
 }
 
+void Terreno::mostrarTerreno(Terreno **terreno){
+	ui fila = this->terreno[0][0].obtenerCantidadDeFilas();
+	ui columna = this->terreno[0][0].obtenerCantidadDeColumnas();
 
+	cout<<"       ESTADO DE PARCELAS"<<endl;
+	cout<<"--------------------------------"<<endl;
+	cout <<" | 1  |  2  |  3  |  4  |  5  |"<< endl;
+	cout <<"------------------------------"<< endl;
 
+	for (ui i= 0; i<= fila;i++){
+			for (ui j=0; j<= columna ; j++){
+				char tipo = this->terreno[i][j].Parcela.tipo;
+				cout<<" "<< tipo << "  | ";
+			}
+			cout <<" "<< endl;
+			cout <<"------------------------------"<< endl;
+			cout <<" "<< endl;
+
+		}
+
+}

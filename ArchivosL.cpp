@@ -12,6 +12,22 @@
 #define VACIO ""
 using namespace std;
 #include<fstream>
+typedef unsigned short int ui;
+
+void ArchivosL::datosLista(std::string linea,Lista<std::string>&datos){
+	std::string dato;
+	for(ui i=0;linea.length();i++){
+		if(linea[i]!=','){
+			dato+=linea[i];
+		}
+		else{
+			datos.agregar(dato);
+			dato="";
+		}
+	}
+}
+
+
 
 void ArchivosL::pedirNombreDeArchivo(){
 	string nombre;

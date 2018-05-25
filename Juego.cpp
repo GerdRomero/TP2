@@ -18,6 +18,7 @@ Juego::Juego() {
 	this->estadoGranjeros.jugando=true;
 	this->estadoGranjeros.finTurno=false;
 	this->jugadorActual=NULL;
+	this->posJugadorEnJugadores=0;
 }
 
 
@@ -39,12 +40,12 @@ void Juego::mostrarDificultades(){
 }
 ui Juego::pedirDificultad(){
 	ui dificultad;
-	std::cout<<"Ingrese una dificultad (solo numeros): "<<std::endl;
+	std::cout<<"Ingrese una dificultad para los jugador/es(solo numeros): "<<std::endl;
 	std::cout<<"1-Facil"<<std::endl;
 	std::cout<<"2-Normal"<<std::endl;
 	std::cout<<"3-Dificil"<<std::endl;
 	std::cin>>dificultad;
-	if(dificultad>3||dificultad==0||!isdigit(dificultad)){
+	if(dificultad>3||dificultad==0){
 		pedirDificultad();
 	}
 	return dificultad;
@@ -69,8 +70,10 @@ void Juego::comenzarTurno(){
 	this->jugadores->iniciarCursor();
 	while(this->jugadores->avanzarCursor()){
 		this->jugadorActual=this->jugadores->obtenerCursor();
+		this->posJugadorEnJugadores+=1;
 		Jugar();
 	}
+
 	contarTurnos();
 }
 
@@ -83,14 +86,13 @@ void Juego::Jugar(){
 }
 
 ui Juego::opcionValida(){
-	char opcion;
+	ui opcion;
 	std::cout <<"Opcion: ";
 	std::cin>> opcion;
-	while ((ui)opcion <= 0 || (ui)opcion > 7){
-		std::cout <<"Opcion: ";
-		std::cin>> opcion;
+	if (opcion <= 0 || opcion > 6){
+		opcionValida();
 	}
-	return ((ui)opcion);
+	return opcion;
 
 }
 
@@ -102,13 +104,15 @@ void  Juego::menu(){
 	std::cout<<"2)REGAR."<<std::endl;
 	std::cout<<"3)COSECHAR."<<std::endl;
 	std::cout<<"4)COMPRAR."<<std::endl;
-	std::cout<<"6)CAMBIAR TERRENO EN JUEGO."<<std::endl;
-	std::cout<<"7)PASAR TURNO."<<std::endl;
+	std::cout<<"5)CAMBIAR TERRENO EN JUEGO."<<std::endl;
+	std::cout<<"6)PASAR TURNO."<<std::endl;
 }
+/*Para hacer pruebas*/
+/*
 void Juego::revisarEstados(){
 	this->jugadorActual->terrenosSembrados();
-}
-	
+}*/
+
 void Juego::mostrarOpciones(){
 	menu();
 	int opcionMenu = opcionValida();
@@ -123,27 +127,15 @@ void Juego::mostrarOpciones(){
 		this->jugadorActual->cosecharTerreno();
 		break;
 	case 4:
-		comprarMercado();
-		this->jugadorActual->agregarTerreno();
+		this->jugadorActual->comprar();
+		//this->jugadorActual->agregarTerreno();
 		break;
 	case 5:
-		this->jugadorActual->comprarSemillas();
+		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
 		break;
 	case 6:
-		/*Cambia pos de terreno a terrenoEnJuego*/
-		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
-
-		break;
-	case 7:
-		revisarEstados();
 		this->jugadorActual->finalizarTurno();
-
 		break;
-
-	default:
-		break;
-
-
 	}
 }
 Juego::~Juego() {
