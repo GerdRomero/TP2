@@ -56,6 +56,25 @@ ui Semilla::cantDisponible(){
 	return this->cantidadDisponible;
 }
 
+void agregarCosto(std::string costo){
+		this->costo=4;
+}
+void agregarTiempoCosec(std::string turnos){
+	this->tiempoCosecha=5;//atoi(turnos.c_str());
+	//std::cout<<this->tiempoCosecha;
+}
+void agregarRentabilidad(std::string ganancia){
+	this->rentabilidad=5;// atoi(ganancia.c_str());
+	//std::cout<<this->rentabilidad;
+}
+void agregarTiempoRecup(std::string recuperacion){
+	this->tiempoRecup=6;//atoi(recuperacion.c_str());
+	//std::cout<<this->tiempoRecup;
+}
+void agregarAguaTurno(std::string aguaPorTurno){
+	this->aguaTurno=7;//atoi(aguaPorTurno.c_str());
+	//std::cout<<this->aguaTurno;
+}
 Semilla::~Semilla() {
 	// TODO Auto-generated destructor stub
 }
