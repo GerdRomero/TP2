@@ -43,7 +43,7 @@ public:
 	/*post: setea pos[] con una fila y columna pedida para un terreno*/
 	void pedirPosicion();
 
- /*post:opciones de compra, clase Mercado*/
+ 	/*post:opciones de compra, clase Mercado*/
 	void comprar();
 	/*pre:numero de terreno valido en lista terrenos
 	 * post:cambia la posicion en lista terrenos para setear terrenoEnJuego*/
@@ -75,15 +75,19 @@ public:
 	void mostrarInfoSemilla();
 	/*post: Castea un tipo de Semilla existente*/
 	char tipoSemillaValida();
+	/* post: Devuelve la cantidad de credito que tiene el jugador.*/
 	int verCreditos(){
 		return this->estado.creditos;
 	};
+	/* post: Devuelve la cantidad de agua que tiene el jugador.*/
 	int verCantAgua(){
 		return this->estado.cantAgua;
 	}
+	/* post: Devuelve la cantidad de turnos que tiene el jugador.*/
 	int verTurnos(){
 		return this->estado.turnosRestantes;
 	}
+	/* post:Muestra el terreno por consola*/
 	void mostrarTerreno();
 	virtual ~Jugador();
 private:
