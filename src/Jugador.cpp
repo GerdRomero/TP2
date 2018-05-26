@@ -378,6 +378,7 @@ void Jugador::cargarCultivosJugador(Lista<std::string>*datos){
 	std::string aguaTurno=datos->obtener(6);
 	if(tipoSemilla=="A"){
 		std::cout<<costo<<std::endl;
+		this->cultivos.tipoA.agregarTipo((char)*tipoSemilla.c_str());
 		this->cultivos.tipoA.agregarCosto(costo);
 		this->cultivos.tipoA.agregarTiempoCosec(tiemCosecha);
 		this->cultivos.tipoA.agregarRentabilidad(rentabilidad);
@@ -386,6 +387,7 @@ void Jugador::cargarCultivosJugador(Lista<std::string>*datos){
 		//std::cout<<"Se cargo bien la info  .."<<std::endl;
 	}
 	else if(tipoSemilla=="B"){
+		this->cultivos.tipoB.agregarTipo((char)*tipoSemilla.c_str());
 		this->cultivos.tipoB.agregarCosto(costo);
 		this->cultivos.tipoB.agregarTiempoCosec(tiemCosecha);
 		this->cultivos.tipoB.agregarRentabilidad(rentabilidad);
@@ -393,6 +395,7 @@ void Jugador::cargarCultivosJugador(Lista<std::string>*datos){
 		this->cultivos.tipoB.agregarAguaTurno(aguaTurno);
 	}
 	else if(tipoSemilla=="C"){
+		this->cultivos.tipoC.agregarTipo((char)*tipoSemilla.c_str());
 		this->cultivos.tipoC.agregarCosto(costo);
 		this->cultivos.tipoC.agregarTiempoCosec(tiemCosecha);
 		this->cultivos.tipoC.agregarRentabilidad(rentabilidad);
