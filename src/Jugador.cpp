@@ -21,8 +21,7 @@ Jugador::Jugador(ui dificultad){
 	this->mercado=NULL;
 	cargarDatos();
 	cargarDificJugador(dificultad);
-	Mercado mercado (cultivos);
-	this->mercado=&mercado;
+	this->mercado=new Mercado(cultivos);
 
 }
 void Jugador::cargarDificJugador(ui dificultad){
