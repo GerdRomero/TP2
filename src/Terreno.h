@@ -45,13 +45,15 @@ class Terreno{
 			 * post: Obtiene la fila y la columna
 			 */
 			void pedirParcela();
+			/* post: Devuelve la rentabilidad que tiene la parcela cosechada.*/
 			ui obtenerRentabilidad();
+			/* post: Agrega dimensiones al terreno.*/
 			void agregarDimension(ui fila, ui col);
-
+			/* post: Aumenta la variable numeroDeRiegos cada vez que riega una parcela.*/
 			void aumentarNumeroDeRiegos();
-
+			/* post: Cambia el es esta de la parcela cuando coseche.*/
 			void cambiarACosechado();
-
+			/* post: Cambia el es esta de la parcela cuando siembre.*/
 			void cambiarEstadoDeParcelaSembrada(Semilla* aSembrar);
 			/*
 			 * post:Devuelve true si la parcela esta llena o
@@ -63,16 +65,19 @@ class Terreno{
 			 * 	   iguales al tiempoHastaCosechar.
 			 */
 			bool regoCorrectamente();
-
+			/* post: Lama a los metodos privados recuperarParcela() 
+			         decrementarRecuperacion() y 
+				 incrementarTiempoTrassiembra()*/
 			void actualizando();
 
-			void mostrarTerreno(Terreno **terreno);
-
 	private:
+			/* pre: Miestras este cosechada y this->Parcela.recuperacion == 0.
+			/* post: Cambia la variable this->Sembrada en false.*/
 			void recuperarParcela();
-
+			/* post: Decrementa la variable this->Parcela.recuperacion.*/
 			void decrementarRecuperacion();
-
+			/* pre: Mientras this->Sembrada == true.
+			/* post: Incrementa la variable this->Parcela.tiempoTrasSiembra. */
 			void incrementarTiempoTrasSiembra();
 			/*
 			 * post: Pudre (this->parcelaPodrida = true) o Recupera la Parcela.
