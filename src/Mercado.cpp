@@ -22,7 +22,7 @@ Mercado::Mercado(struct Semillas cultivos){
 void Mercado::mostrarInfo(){}
 ui Mercado::venderTamanioAlmacen(ui tamanio){
 	ui costo;
-	costo=10*tamanio;
+	costo=2*tamanio;
 	return costo;
 }
 ui Mercado::venderCosecha(char tipo, ui cantidad){
@@ -41,12 +41,16 @@ ui Mercado::venderCosecha(char tipo, ui cantidad){
 }
 ui Mercado::cotizarTerreno(Terreno **terrenoCotizar){
 	ui ganancia=0;
+	ui col=terrenoCotizar[0][0].obtenerCantidadDeColumnas();
+	ui fil=terrenoCotizar[0][0].obtenerCantidadDeFilas();
+	ganancia=(fil*col)*5;
 	/*agregar metodo, obtener dimensiones del terreno y devolver ganancia*/
 
 	return ganancia;
 }
 ui Mercado::venderTerreno(ui fila, ui columna){
 	ui ganancia=0;
+	
 
 	return ganancia;
 }
