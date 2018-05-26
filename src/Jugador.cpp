@@ -34,8 +34,7 @@ void Jugador::cargarDificJugador(ui dificultad){
 		N=4, M=4;
 	}
 	agregarTerreno(N,M);
-	Almacen *almacen=new Almacen(2*(N+M));
-	this->almacen=almacen;
+	this->almacen=new Almacen(2*(N+M));
 	this->estado.creditos=2*N*M;
 	this->estado.cantAgua=N*M;
 	this->estado.turnosRestantes=2*N*M;
@@ -422,6 +421,7 @@ void Jugador::mostrarTerreno(){
 
 Jugador::~Jugador() {
 	delete this->almacen;
+	delete this->mercado;
 	// TODO Auto-generated destructor stub
 }
 
