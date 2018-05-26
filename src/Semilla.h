@@ -29,31 +29,28 @@ public:
 	}
 	//void agregarInfo(Lista<std::string>*datos);
 	ui precio();
-	void agregarCosto(std::string costo){
-		this->costo=4;
-	}
-	void agregarTiempoCosec(std::string turnos){
-		this->tiempoCosecha=5;//atoi(turnos.c_str());
-		//std::cout<<this->tiempoCosecha;
-	}
-	void agregarRentabilidad(std::string ganancia){
-		this->rentabilidad=5;// atoi(ganancia.c_str());
-		//std::cout<<this->rentabilidad;
-	}
-	void agregarTiempoRecup(std::string recuperacion){
-		this->tiempoRecup=6;//atoi(recuperacion.c_str());
-		//std::cout<<this->tiempoRecup;
-	}
-	void agregarAguaTurno(std::string aguaPorTurno){
-		this->aguaTurno=7;//atoi(aguaPorTurno.c_str());
-		//std::cout<<this->aguaTurno;
-	}
-	ui cantDisponible();
+	/* post: Agrego el costo de la Semilla*/
+	void agregarCosto(std::string costo);
+	/* post: Agrego el tiempo de Cosecha de la Semilla*/
+	void agregarTiempoCosec(std::string turnos);
+	/* post: Agrego la rentabilidad de la Semilla*/
+	void agregarRentabilidad(std::string ganancia);
+	/* post: Agrego el tiempo de recuperacion de la Semilla*/
+	void agregarTiempoRecup(std::string recuperacion);
+	/* post: Agrego la cantidaqd de agua que requiere la Semilla*/
+	void agregarAguaTurno(std::string aguaPorTurno);
+	/* post: Devuelve la cantidad de semillas compradas*/
+	ui cantDisponible()
+	/* post: Devuelve la cantidad de agua que requiere la Semilla*/
 	ui cantidadAguaTurno();
+	/* post: Devuelve el tiempo de recuperacion*/
 	ui turnosRecuperacion();
+	/* post: Devuelve la rentabilidad */
 	ui ganancia();
+	/* post: Devuelve los turnos hasta cosechar*/
 	ui turnosCosecha();
 	void agregar(ui cantAgregar);
+	/* post: Devuelve true si hay semillas comrpadas. */
 	bool haySemilla();
 	virtual ~Semilla();
 };
