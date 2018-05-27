@@ -140,11 +140,13 @@ void Juego::mostrarOpciones(){
 		this->jugadorActual->mostrarTerreno();
 		break;
 	case 7:
+		this->jugadorActual->restarTurnos();
 		this->jugadorActual->finalizarTurno();
 		std::cout<<"Finalizó su turno "<<std::endl;
 		break;
 	}
 }
+
 
 Juego::~Juego() {
 	delete this->jugadores;
