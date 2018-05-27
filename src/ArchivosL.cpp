@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include<string>
-#define EOF ""
+
 using namespace std;
 #include<fstream>
 typedef unsigned short int ui;
@@ -22,12 +22,13 @@ Lista<std::string>* ArchivosL::datosLista(std::string linea){
 			dato+=linea[i];
 			if(linea.length()==(ui)(i+1)){
 				datosLista->agregar(dato);
+			}
 		}
 		else{
 			datosLista->agregar(dato);
 			dato="";
 		}
-		}		}
+		}
 	return datosLista;
 }
 
@@ -37,7 +38,6 @@ void ArchivosL::pedirNombreDeArchivo(std::string archivo){
 	std::cout<<"Ingrese el Nombre del Archivo "<<archivo<<" :"<<std::endl;
 	std::cin>>nombre;
 	this->nombreDeArchivo=nombre;
-	//abrirArchivoLectura();
 }
 
 void ArchivosL::abrirArchivoLectura(std::string nombreReferencia){
@@ -57,7 +57,6 @@ void ArchivosL::leerArchivo(){
 		getline(this->variableArchivo,linea);
 		std::cout<<linea<<endl;
 	}
-
 }
 std::string ArchivosL::leerLinea(){
 	std::string linea;
@@ -70,7 +69,6 @@ std::string ArchivosL::leerLinea(){
 	}
 	return linea;
 }
-
 
 void ArchivosL::ManejoArchivoLectura(){
 	if ((this->existeArchivo)){

@@ -62,6 +62,7 @@ void Juego::contarTurnos(){
 	this->turnosJuego-=1;
 	if(this->turnosJuego==0){
 		this->estadoGranjeros.finalizado=true;
+		std::cout<<"Finalizo el juego. "<<std::endl;
 	}
 }
 bool Juego::finJuego(){
@@ -75,7 +76,6 @@ void Juego::comenzarTurno(){
 		this->posJugadorEnJugadores+=1;
 		Jugar();
 	}
-
 	contarTurnos();
 }
 
@@ -83,7 +83,6 @@ void Juego::Jugar(){
 	while(!this->jugadorActual->noFinalizado()){
 		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
 		mostrarOpciones();
-
 	}
 }
 
@@ -91,7 +90,7 @@ ui Juego::opcionValida(){
 	ui opcion;
 	std::cout <<"Opcion: ";
 	std::cin>> opcion;
-	if (opcion <= 0 || opcion > 6){
+	if (opcion <= 0 || opcion > 7){
 		opcionValida();
 	}
 	return opcion;
@@ -99,6 +98,9 @@ ui Juego::opcionValida(){
 }
 
 void  Juego::menu(){
+	std::cout<<"Hay "<<this->cantJugadores<<"jugadores en esta ronda. "<<std::endl;
+	std::cout<<"El jugador "<<this->posJugadorEnJugadores
+			<<" esta jugando. "<<std::endl;
 	std::cout<<"******* MENU *******"<<std::endl;
 	std::cout<<"1)SEMBRAR."<<std::endl;
 	std::cout<<"2)REGAR."<<std::endl;
@@ -135,10 +137,11 @@ void Juego::mostrarOpciones(){
 		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
 		break;
 	case 6:
-		//this->jugadorActual->mostrarTerreno();
+		this->jugadorActual->mostrarTerreno();
 		break;
 	case 7:
 		this->jugadorActual->finalizarTurno();
+		std::cout<<"Finalizó su turno "<<std::endl;
 		break;
 	}
 }

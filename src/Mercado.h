@@ -28,7 +28,7 @@ public:
 	/*pre: tipo de cosecha exitente y cantidad que no supere
 	 * post: devuelve ganancia*/
 	ui venderCosecha(char tipo, ui cant);
-	ui cotizarTerreno( Terreno **terrenoACotizar);
+	ui cotizarTerreno(Terreno **terrenoACotizar);
 	ui venderTerreno(ui fila, ui columna);
 	/*pre: tipo de cultivo exitente,
 	 * post:

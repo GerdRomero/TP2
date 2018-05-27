@@ -30,7 +30,7 @@ private:
 	Terreno **terrenoEnJuego;
 	Almacen *almacen;
 	Mercado *mercado;
-
+	ui dificultad;
 	ui cantTerrenos;
 	ui posicionTerrenoEnJuego;
 	ui pos[];
@@ -43,7 +43,7 @@ public:
 	/*post: setea pos[] con una fila y columna pedida para un terreno*/
 	void pedirPosicion();
 
- 	/*post:opciones de compra, clase Mercado*/
+ /*post:opciones de compra, clase Mercado*/
 	void comprar();
 	/*pre:numero de terreno valido en lista terrenos
 	 * post:cambia la posicion en lista terrenos para setear terrenoEnJuego*/
@@ -75,19 +75,15 @@ public:
 	void mostrarInfoSemilla();
 	/*post: Castea un tipo de Semilla existente*/
 	char tipoSemillaValida();
-	/* post: Devuelve la cantidad de credito que tiene el jugador.*/
 	int verCreditos(){
 		return this->estado.creditos;
 	};
-	/* post: Devuelve la cantidad de agua que tiene el jugador.*/
 	int verCantAgua(){
 		return this->estado.cantAgua;
 	}
-	/* post: Devuelve la cantidad de turnos que tiene el jugador.*/
 	int verTurnos(){
 		return this->estado.turnosRestantes;
 	}
-	/* post:Muestra el terreno por consola*/
 	void mostrarTerreno();
 	virtual ~Jugador();
 private:
@@ -130,6 +126,7 @@ private:
 	void cargarDificJugador(ui dificultad);
 	void agregarCultivos(char tipo, ui cant);
 	char semillaValida(ui opcion);
+	void verificarDimensionTerreno();
 /*post: devuelve terrenoActual(el que esta usando el jugador de la lista de terrenos
  * , solo para hacer pruebas)*/
 	Terreno** obtenerTerreno();

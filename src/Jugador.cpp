@@ -19,6 +19,7 @@ Jugador::Jugador(ui dificultad){
 	this->finTurno=false;
 	this->cantTerrenos=0;
 	this->mercado=NULL;
+	this->dificultad=dificultad;
 	cargarDatos();
 	cargarDificJugador(dificultad);
 	this->mercado=new Mercado(cultivos);
@@ -34,6 +35,7 @@ void Jugador::cargarDificJugador(ui dificultad){
 		N=4, M=4;
 	}
 	agregarTerreno(N,M);
+	//Almacen *almacen=new Almacen(2*(N+M));
 	this->almacen=new Almacen(2*(N+M));
 	this->estado.creditos=2*N*M;
 	this->estado.cantAgua=N*M;
@@ -42,11 +44,12 @@ void Jugador::cargarDificJugador(ui dificultad){
 }
 void Jugador::mostrarInfo(){
 	/*Mostrar info productos (Vale por mostrar info semillas con punteros)*/
-	std::cout<<"1- tipo A "<<this->cultivos.tipoA.precio()<<std::endl;
-	std::cout<<"2- tipo B "<<this->cultivos.tipoB.precio()<<std::endl;
-	std::cout<<"3- tipo C"<<this->cultivos.tipoC.precio()<<std::endl;
-
-
+	std::cout<<"1- tipo "<<this->cultivos.tipoA.obtenerTipo()
+			<<" "<<this->cultivos.tipoA.precio()<<std::endl;
+	std::cout<<"2- tipo "<<this->cultivos.tipoB.obtenerTipo()
+			<<" "<<this->cultivos.tipoB.precio()<<std::endl;
+	std::cout<<"3- tipo "<<this->cultivos.tipoC.obtenerTipo()
+			<<" "<<this->cultivos.tipoC.precio()<<std::endl;
 }
 ui Jugador::opcionValida(ui min, ui max){
 	ui opcion;
@@ -61,9 +64,16 @@ ui Jugador::opcionValida(ui min, ui max){
 void Jugador::venderTerreno(){
 	ui terrenoAVender=terrenoValido();
 	Terreno **terrenoACotizar=this->terrenos->obtener(terrenoAVender);
+	if(terrenoAVender!=this->posicionTerrenoEnJuego){
 	ui ganancia=this->mercado->cotizarTerreno(terrenoACotizar);
 	this->terrenos->remover(terrenoAVender);
 	this->estado.creditos+=ganancia;
+	std::cout<<"Se vendio el terreno correctamente. "<<std::endl;
+	}
+	else{
+		std::cout<<"Debe cambiar el terreno que está"
+				" utilizando para venderlo"<<std::endl;
+	}
 }
 
 char Jugador::semillaValida(ui opcion){
@@ -113,15 +123,31 @@ void Jugador::agregarCultivos(char tipoSemilla,ui cantidad){
 			break;
 		}
 }
+void Jugador::verificarDimensionTerreno(){
+	ui fil, col;
+	std::cout<<"Ingrese la fila :"<<std::endl;
+	std::cin>>fil;
+	this->pos[0]=fil;
+	std::cout<<"Ingrese la columna: "<<std::endl;
+	std::cin>>col;
+	this->pos[1]=col;
+	if (fil>(2*this->dificultad)||col>(2*this->dificultad)){
+		std::cout<<"Puede comprar un terreno de hasta "<<
+				(2*this->dificultad)<<"*"<<(2*this->dificultad)<<std::endl;
+		verificarDimensionTerreno();
+	}
+}
 void Jugador::comprarTerreno(){
-	pedirPosicion();
 	/*falta tomar el caso de pedir dimension por dificultad*/
-	ui fila=this->pos[0];
-	ui col=this->pos[1];
-	ui costo=this->mercado->venderTerreno(fila, col);
+	verificarDimensionTerreno();
+	ui fil=filaTerreno();
+	ui col=columnaTerreno();
+	//std::cout<<fil<<" * "<<col<<"dimensiones "<<std::endl;
+	ui costo=this->mercado->venderTerreno(fil, col);
 	if(hayCreditos(costo)){
-		agregarTerreno(fila,col);
+		agregarTerreno(fil,col);
 		this->estado.creditos-=costo;
+		std::cout<<"Se compro un terreno exitosamente. "<<std::endl;
 	}else{
 		std::cout<<"No hay creditos suficientes"<<std::endl;
 	}
@@ -136,6 +162,7 @@ void Jugador::comprarCapacAlmacen(){
 	if(hayCreditos(costo)){
 		this->almacen->extender(capac);
 		this->estado.creditos-=costo;
+		std::cout<<"Se extendio el almacen en "<<capac<<std::endl;
 	}else{
 		std::cout<<"No hay creditos suficientes "<<std::endl;
 	}
@@ -151,14 +178,16 @@ void Jugador::venderCosecha(){
 	this->almacen->leerDestino();
 	cantAEnviar=this->almacen->elegirCosecha();
 	costo=this->almacen->prepararCosecha(cantAEnviar);
-	if(hayCreditos(costo)){
+	if(hayCreditos(costo)&&cantAEnviar>0){
 		char cosecha=this->almacen->obtenerTipoCosechaPreparada();
 		ui ganancia=this->mercado->venderCosecha(cosecha,cantAEnviar);
 		this->estado.creditos+=ganancia;
+		std::cout<<"Se envio correctamente la cosecha. "<<std::endl;
+		std::cout<<"Obtuvo "<<ganancia<< " de ganancia. "<<std::endl;
 		this->almacen->vaciarCosecha();
 	}
 	else{
-		std::cout<<"No hay creditos suficientes"<<std::endl;
+		std::cout<<"No hay creditos suficientes o no tiene cosecha de ese tipo."<<std::endl;
 	}
 }
 void Jugador::mostrarMenuCompras(){
@@ -167,11 +196,13 @@ void Jugador::mostrarMenuCompras(){
 	std::cout<<"3- Comprar Terreno "<<std::endl;
 	std::cout<<"4 -Vender Terreno "<<std::endl;
 	std::cout<<"5- Comprar espacio en Almacen "<<std::endl;
+	std::cout<<"6- Volver al Menu anterior "<<std::endl;
+
 
 }
 void Jugador::comprar(){
 	mostrarMenuCompras();
-	ui opcion=opcionValida(1,5);
+	ui opcion=opcionValida(1,6);
 	switch(opcion){
 	case 1:
 		comprarSemillas();
@@ -183,12 +214,13 @@ void Jugador::comprar(){
 		comprarTerreno();
 		break;
 	case 4:
-		//venderTerreno();
+		venderTerreno();
 		break;
 	case 5:
 		comprarCapacAlmacen();
 		break;
 	case 6:
+
 		break;
 	}
 }
@@ -220,7 +252,6 @@ void Jugador::agregarTerreno(){
 	  terreno[col] = new Terreno[columna];
 	this->terrenos->agregar(terreno);
 	this->cantTerrenos+=1;
-
 }
 
 void Jugador::obtenerTerrenoEnJuego(ui posicionTerreno){
@@ -230,10 +261,11 @@ ui Jugador::terrenoValido(){
 	ui posTerreno;
 	std::cout<<this->cantTerrenos<<std::endl;
 	std::cout<<"Ingrese un numero de terreno: "<<std::endl;
+	std::cout<<"Tiene "<<this->cantTerrenos<<" terrenos. "<<std::endl;
 	std::cin>>posTerreno;
 	if(posTerreno>this->cantTerrenos|| posTerreno<=0){
+		std::cout<<"Tiene "<<this->cantTerrenos<<" terrenos. "<<std::endl;
 		std::cout<<"Ingrese un numero de terreno valido: "<<std::endl;
-		std::cout<<"Entre "<<"1 y "<<this->cantTerrenos<<std::endl;
 		terrenoValido();
 	}
 	return posTerreno;
@@ -251,6 +283,7 @@ void Jugador::sembrarTerreno(){
 	if (!(this->terrenoEnJuego[fil][col].estaSembrada())
 			&&this->aSembrar->cantDisponible()>0){
 		this->terrenoEnJuego[fil][col].cambiarEstadoDeParcelaSembrada(this->aSembrar);
+		std::cout<<"Sembro correctamente. "<<std::endl;
 		//this->cantidad.creditos = (this->cantidad.creditos - this->aSembrar->precio());
 	}
 	else{
@@ -356,8 +389,9 @@ void Jugador::pedirPosicion(){
 
 void Jugador::cargarDatos(){
 	ArchivosL cultivos;
-	cultivos.pedirNombreDeArchivo("cultivos");
-	cultivos.abrirArchivoLectura("cultivos");
+	std::string nomReferencia="cultivos";
+	cultivos.pedirNombreDeArchivo(nomReferencia);
+	cultivos.abrirArchivoLectura(nomReferencia);
 	std::string linea=cultivos.leerLinea();
 	while(linea!=EOF){
 		Lista<std::string>*infoCultivos=cultivos.datosLista(linea);
@@ -366,7 +400,7 @@ void Jugador::cargarDatos(){
 		infoCultivos=NULL;
 	}
 }
-
+/*Falta modular, no funciono de otra forma*/
 void Jugador::cargarCultivosJugador(Lista<std::string>*datos){
 	std::string tipoSemilla=datos->obtener(1).c_str();
 	std::string costo=datos->obtener(2);
@@ -375,14 +409,12 @@ void Jugador::cargarCultivosJugador(Lista<std::string>*datos){
 	std::string tiemRecu=datos->obtener(5);
 	std::string aguaTurno=datos->obtener(6);
 	if(tipoSemilla=="A"){
-		std::cout<<costo<<std::endl;
 		this->cultivos.tipoA.agregarTipo((char)*tipoSemilla.c_str());
 		this->cultivos.tipoA.agregarCosto(costo);
 		this->cultivos.tipoA.agregarTiempoCosec(tiemCosecha);
 		this->cultivos.tipoA.agregarRentabilidad(rentabilidad);
 		this->cultivos.tipoA.agregarTiempoRecup(tiemRecu);
 		this->cultivos.tipoA.agregarAguaTurno(aguaTurno);
-		//std::cout<<"Se cargo bien la info  .."<<std::endl;
 	}
 	else if(tipoSemilla=="B"){
 		this->cultivos.tipoB.agregarTipo((char)*tipoSemilla.c_str());
@@ -409,10 +441,10 @@ void Jugador::mostrarTerreno(){
 	ui fila = this->terrenoEnJuego[0][0].obtenerCantidadDeFilas();
 	ui columna = this->terrenoEnJuego[0][0].obtenerCantidadDeColumnas();
 
-	cout<<"\nBienvenido a granjeros."<<endl;
-	for(int i=0;i<=fila;i++){
-		for(int j=0;j<=columna;j++){
-			cout<<"||\t"<<(terrenoEnJuego[i][j].mostrarTipo())<<"\t";
+	cout<<"\nBienvenido a granjeros. "<<endl;
+	for(int i=0;i<fila;i++){
+		for(int j=0;j<columna;j++){
+			cout<<"||\t"<<(terrenoEnJuego[i][j]).mostrarTipo()<<"\t";
 		}
 	cout<<"||";
 	cout<<"\n";

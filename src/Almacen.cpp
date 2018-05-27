@@ -11,8 +11,8 @@
 #define VACIO ""
 
 Almacen::Almacen(ui tam){
-	this->cosechas=NULL;
-	this->espacioDisponible=0;
+	this->cosechas=new Cosechas;
+	this->espacioDisponible=tam;
 	this->tam=tam;
 	this->cosechaEnviar=NULL;
 }
@@ -28,26 +28,33 @@ void Almacen::leerDestino(){
 	destinos.pedirNombreDeArchivo("destinos");
 	destinos.abrirArchivoLectura("destinos");
 	std::string linea=destinos.leerLinea();
-	while(linea!=VACIO){
+	while(linea!=EOF){
 		Lista<std::string>*infoDestinos=destinos.datosLista(linea);
 		cargarDestinosCosechas(infoDestinos);
+		linea=destinos.leerLinea();
+		infoDestinos=NULL;
 	}
 }
 ui Almacen::opcionValida(){
 	ui opcion;
 	std::cout<<"INgrese una opcion para enviar: "<<std::endl;
 	std::cin>>opcion;
-	if(opcion>3 ||opcion==0|| !isdigit(opcion)){
+	if(opcion>3 ||opcion==0){
 		opcionValida();
 	}
 	return opcion;
 }
-ui Almacen::elegirCosecha(){
+void Almacen::mostrarInfoEnvios(){
 	/*Mostrar cosechas disponibles, metodo aparte*/
-	std::cout<<this->cosechas->tipoA.tipo<<this->cosechas->tipoA.destino<<std::endl;
-	std::cout<<"1-"<<std::endl;
-	std::cout<<"2-"<<std::endl;
-	std::cout<<"3-"<<std::endl;
+	std::cout<<"1- "<<this->cosechas->tipoA.tipo<<" "
+			<<this->cosechas->tipoA.destino <<std::endl;
+	std::cout<<"2- "<<this->cosechas->tipoB.tipo<<" "
+			<<this->cosechas->tipoB.destino<<std::endl;
+	std::cout<<"3- "<<this->cosechas->tipoC.tipo<<" "
+				<<this->cosechas->tipoC.destino<<std::endl;
+}
+ui Almacen::elegirCosecha(){
+	mostrarInfoEnvios();
 	ui cosechaEnviar=opcionValida();
 	ui cantCosecha;
 	switch(cosechaEnviar){
@@ -76,23 +83,34 @@ ui Almacen::prepararCosecha(ui cantCosecha){
 
 void Almacen::cargarDestinosCosechas(Lista<std::string>*datos){
 	std::string tipoCultivo=datos->obtener(4).c_str();
+	std::cout<<"cultivo a enviar "<<tipoCultivo<<std::endl;
 	if(tipoCultivo=="A"){
 		this->cosechas->tipoA.destino=datos->obtener(1).c_str();
-		this->cosechas->tipoA.costo=(ui)(char)*datos->obtener(1).c_str();
-		this->cosechas->tipoA.tipo=(char)*datos->obtener(4).c_str();
+		//std::cout<<"reviasr envios "<<this->cosechas->tipoA.destino<<std::endl;
+		this->cosechas->tipoA.costo=atoi(datos->obtener(3).c_str());
+		this->cosechas->tipoA.tipo=atoi(datos->obtener(4).c_str());
 		}
 	else if(tipoCultivo=="B"){
+
 		this->cosechas->tipoB.destino=datos->obtener(1).c_str();
-		//this->cosechas->tipoB.costo=(ui)(char)*datos->obtener(1).c_str();
-		//this->cosechas->tipoB.tipo=(char)*datos->obtener(4).c_str();
+		//std::cout<<"reviasr envios "<<this->cosechas->tipoB.destino<<std::endl;
+
+		this->cosechas->tipoB.costo=atoi(datos->obtener(3).c_str());
+		this->cosechas->tipoB.tipo=atoi(datos->obtener(4).c_str());
+
+		}
+	else if(tipoCultivo=="C"){
+
+		this->cosechas->tipoC.destino=datos->obtener(1).c_str();
+		//std::cout<<"reviasr envios "<<this->cosechas->tipoC.destino<<std::endl;
+
+		this->cosechas->tipoC.costo=atoi(datos->obtener(1).c_str());
+		this->cosechas->tipoC.tipo=atoi(datos->obtener(4).c_str());
 
 		}
 	else{
-		this->cosechas->tipoC.destino=datos->obtener(1).c_str();
-		//this->cosechas->tipoC.costo=(ui)(char)*datos->obtener(1).c_str();
-		//this->cosechas->tipoC.tipo=(char)*datos->obtener(4).c_str();
-
-		}
+		std::cout<<"No se cargaron correctamente los cultivos"<<std::endl;
+	}
 }
 
 ui Almacen::cantidadDeCosecha(char tipoCosecha){
@@ -118,7 +136,6 @@ ui Almacen::cantEspacioDisponible(){
 }
 void Almacen::elegirCosechaGuardar(ui cantCosecha, char tipoCosecha){
 	switch(tipoCosecha){
-
 	case 'A':
 		this->cosechas->tipoA.cant+=cantCosecha;
 		break;
@@ -142,5 +159,6 @@ void Almacen::guardarCosecha(ui cantCosecha,  char tipoCosecha)
 	}
 	}
 Almacen::~Almacen(){
+	delete cosechas;
 /*terminar*/
 }

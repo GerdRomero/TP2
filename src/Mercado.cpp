@@ -9,7 +9,6 @@
 #include"Jugador.h"
 
 
-
 Mercado::Mercado(struct Semillas cultivos){
 	this->costoTipoA=cultivos.tipoA.precio();
 	this->costoTipoB=cultivos.tipoB.precio();
@@ -50,7 +49,6 @@ ui Mercado::cotizarTerreno(Terreno **terrenoCotizar){
 }
 ui Mercado::venderTerreno(ui fila, ui columna){
 	ui ganancia=0;
-	
 
 	return ganancia;
 }
@@ -59,12 +57,17 @@ ui Mercado::ventaSemillas(char tipoSemilla,ui cantidad){
 	switch(tipoSemilla){
 	case 'A':
 		costo=this->costoTipoA;
+		//std::cout<<"costo a"<<this->costoTipoA<<std::endl;
 		break;
 	case 'B':
 		costo=this->costoTipoB;
+		//std::cout<<this->costoTipoB<<std::endl;
+
 		break;
 	case 'C':
 		costo=this->costoTipoC;
+		//std::cout<<this->costoTipoC<<std::endl;
+
 		break;
 	}
 	costo=costo*cantidad;

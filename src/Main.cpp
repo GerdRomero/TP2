@@ -5,10 +5,8 @@
  *      Author: cristian
  */
 
-#include <iostream>
 #include "Juego.h"
 #include "Lista.h"
-
 #include"ArchivosL.h"
 
 
@@ -20,8 +18,9 @@ int main(){
 	granjeros.agregarJugadores(1);
 	while(!granjeros.finJuego()){
 
-	granjeros.comenzarTurno();
+		granjeros.comenzarTurno();
 	}
+
 
 return 0;
 }

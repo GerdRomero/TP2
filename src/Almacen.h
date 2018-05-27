@@ -54,6 +54,7 @@ class Almacen{
 			void vaciarCosecha(){
 				this->cosechaEnviar->cant=0;
 			}
+			void mostrarInfoEnvios();
 			ui elegirCosecha();
 			~Almacen();
 	private:
