@@ -20,6 +20,7 @@ private:
 	Semilla *tipoB;
 	Semilla *tipoC;
 public:
+	/*post: Carga los cultivos al Mercado para cada semilla.*/
 	Mercado(struct Semillas cultivos);
 	void mostrarInfo();
 	/*pre: tamnio a vender para el almacen
