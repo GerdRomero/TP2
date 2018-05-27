@@ -77,6 +77,7 @@ void Juego::comenzarTurno(){
 		Jugar();
 	}
 	contarTurnos();
+
 }
 
 void Juego::Jugar(){
@@ -98,7 +99,7 @@ ui Juego::opcionValida(){
 }
 
 void  Juego::menu(){
-	std::cout<<"Hay "<<this->cantJugadores<<"jugadores en esta ronda. "<<std::endl;
+	std::cout<<"Hay "<<this->cantJugadores<<" jugadores en esta ronda. "<<std::endl;
 	std::cout<<"El jugador "<<this->posJugadorEnJugadores
 			<<" esta jugando. "<<std::endl;
 	std::cout<<"******* MENU *******"<<std::endl;
@@ -140,13 +141,11 @@ void Juego::mostrarOpciones(){
 		this->jugadorActual->mostrarTerreno();
 		break;
 	case 7:
-		this->jugadorActual->restarTurnos();
 		this->jugadorActual->finalizarTurno();
 		std::cout<<"Finalizó su turno "<<std::endl;
 		break;
 	}
 }
-
 
 Juego::~Juego() {
 	delete this->jugadores;

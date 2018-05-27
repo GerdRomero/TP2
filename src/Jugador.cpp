@@ -123,6 +123,7 @@ void Jugador::agregarCultivos(char tipoSemilla,ui cantidad){
 			break;
 		}
 }
+
 void Jugador::verificarDimensionTerreno(){
 	ui fil, col;
 	std::cout<<"Ingrese la fila :"<<std::endl;
@@ -220,6 +221,7 @@ void Jugador::comprar(){
 		comprarCapacAlmacen();
 		break;
 	case 6:
+		/*agregar retorno*/
 
 		break;
 	}
@@ -270,8 +272,7 @@ ui Jugador::terrenoValido(){
 	}
 	return posTerreno;
 }
-
-void Jugador::sembrarTerreno(){
+void Jugador::filaColValido(){
 	ui fil, col;
 	std::cout<<"Ingrese la fila :"<<std::endl;
 	std::cin>>fil;
@@ -279,6 +280,20 @@ void Jugador::sembrarTerreno(){
 	std::cout<<"Ingrese la columna: "<<std::endl;
 	std::cin>>col;
 	col-=1;
+	if((fil>this->terrenoEnJuego[0][0].obtenerCantidadDeFilas()
+			||fil<0)
+			&&(col>this->terrenoEnJuego[0][0].obtenerCantidadDeColumnas()
+			||col<0)){
+		filaColValido();
+	}
+	this->pos[0]=fil;
+	this->pos[1]=col;
+}
+
+void Jugador::sembrarTerreno(){
+	filaColValido();
+	ui fil=filaTerreno();
+	ui col=columnaTerreno();
 	pedirSemillaSembrar();
 	if (!(this->terrenoEnJuego[fil][col].estaSembrada())
 			&&this->aSembrar->cantDisponible()>0){
@@ -312,11 +327,9 @@ void Jugador::cosecharTerreno(){
 	ui col=columnaTerreno();
 	if((this->terrenoEnJuego[fil][col].estaSembrada()) &&
 		(this->terrenoEnJuego[fil][col].regoCorrectamente())){
-		//this->estado.creditos += this->terrenoEnJuego[fil][col].obtenerRentabilidad();
 		this->terrenoEnJuego[fil][col].cambiarACosechado();
 		char siembra=this->terrenoEnJuego[fil][col].mostrarTipo();
 		this->almacen->guardarCosecha(1,siembra);
-		//this->almacen->guardarCosecha();
 	}
 }
 
@@ -397,8 +410,9 @@ void Jugador::cargarDatos(){
 		Lista<std::string>*infoCultivos=cultivos.datosLista(linea);
 		cargarCultivosJugador(infoCultivos);
 		linea=cultivos.leerLinea();
-		infoCultivos=NULL;
+		delete infoCultivos;
 	}
+
 }
 /*Falta modular, no funciono de otra forma*/
 void Jugador::cargarCultivosJugador(Lista<std::string>*datos){
@@ -451,9 +465,6 @@ void Jugador::mostrarTerreno(){
 	}
 }
 
-void Jugador::restarTurnos(){
-	this->turnosRestantes--;
-}
 Jugador::~Jugador() {
 	delete this->almacen;
 	delete this->mercado;

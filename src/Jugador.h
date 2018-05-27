@@ -42,7 +42,6 @@ public:
 	Jugador(ui dificultad);
 	/*post: setea pos[] con una fila y columna pedida para un terreno*/
 	void pedirPosicion();
-	void restarTurnos();
 
  /*post:opciones de compra, clase Mercado*/
 	void comprar();
@@ -127,6 +126,7 @@ private:
 	void cargarDificJugador(ui dificultad);
 	void agregarCultivos(char tipo, ui cant);
 	char semillaValida(ui opcion);
+	void filaColValido();
 	void verificarDimensionTerreno();
 /*post: devuelve terrenoActual(el que esta usando el jugador de la lista de terrenos
  * , solo para hacer pruebas)*/
