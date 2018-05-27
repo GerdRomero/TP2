@@ -33,9 +33,10 @@ void Juego::agregarJugadores(ui cantidad){
 		}
 }
 void Juego::mostrarDificultades(){
-	std::cout<<"Info de Dif"<<std::endl;
-	std::cout<<"Info de Dif"<<std::endl;
-	std::cout<<"Info de Dif"<<std::endl;
+	std::cout<<"Granjeros V1.0:"<<std::endl;
+	//std::cout<<"Info de Dif Facil "<<std::endl;
+	//std::cout<<"Info de Dif Normal "<<std::endl;
+	//std::cout<<"Info de Dif Dificil "<<std::endl;
 
 }
 ui Juego::pedirDificultad(){
@@ -44,6 +45,7 @@ ui Juego::pedirDificultad(){
 	std::cout<<"1-Facil"<<std::endl;
 	std::cout<<"2-Normal"<<std::endl;
 	std::cout<<"3-Dificil"<<std::endl;
+	std::cout<<"Ingrese una opcion: "<<std::endl;
 	std::cin>>dificultad;
 	if(dificultad>3||dificultad==0){
 		pedirDificultad();
@@ -60,6 +62,7 @@ void Juego::contarTurnos(){
 	this->turnosJuego-=1;
 	if(this->turnosJuego==0){
 		this->estadoGranjeros.finalizado=true;
+		std::cout<<"Finalizo el juego. "<<std::endl;
 	}
 }
 bool Juego::finJuego(){
@@ -73,15 +76,14 @@ void Juego::comenzarTurno(){
 		this->posJugadorEnJugadores+=1;
 		Jugar();
 	}
-
 	contarTurnos();
+
 }
 
 void Juego::Jugar(){
-	while(this->jugadorActual->noFinalizado()){
+	while(!this->jugadorActual->noFinalizado()){
 		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
 		mostrarOpciones();
-
 	}
 }
 
@@ -89,7 +91,7 @@ ui Juego::opcionValida(){
 	ui opcion;
 	std::cout <<"Opcion: ";
 	std::cin>> opcion;
-	if (opcion <= 0 || opcion > 6){
+	if (opcion <= 0 || opcion > 7){
 		opcionValida();
 	}
 	return opcion;
@@ -97,15 +99,17 @@ ui Juego::opcionValida(){
 }
 
 void  Juego::menu(){
-	std::cout<<"********************"<<std::endl;
+	std::cout<<"Hay "<<this->cantJugadores<<" jugadores en esta ronda. "<<std::endl;
+	std::cout<<"El jugador "<<this->posJugadorEnJugadores
+			<<" esta jugando. "<<std::endl;
 	std::cout<<"******* MENU *******"<<std::endl;
-	std::cout<<"********************"<<std::endl;
 	std::cout<<"1)SEMBRAR."<<std::endl;
 	std::cout<<"2)REGAR."<<std::endl;
 	std::cout<<"3)COSECHAR."<<std::endl;
 	std::cout<<"4)COMPRAR."<<std::endl;
 	std::cout<<"5)CAMBIAR TERRENO EN JUEGO."<<std::endl;
-	std::cout<<"6)PASAR TURNO."<<std::endl;
+	std::cout<<"6)MOSTRAR TERRENO EN JUEGO."<<std::endl;
+	std::cout<<"7)PASAR TURNO."<<std::endl;
 }
 /*Para hacer pruebas*/
 /*
@@ -114,6 +118,7 @@ void Juego::revisarEstados(){
 }*/
 
 void Juego::mostrarOpciones(){
+	this->jugadorActual->mostrarTerreno();
 	menu();
 	int opcionMenu = opcionValida();
 	switch(opcionMenu){
@@ -128,16 +133,20 @@ void Juego::mostrarOpciones(){
 		break;
 	case 4:
 		this->jugadorActual->comprar();
-		//this->jugadorActual->agregarTerreno();
 		break;
 	case 5:
 		this->jugadorActual->obtenerTerrenoEnJuego(this->jugadorActual->terrenoValido());
 		break;
 	case 6:
+		this->jugadorActual->mostrarTerreno();
+		break;
+	case 7:
 		this->jugadorActual->finalizarTurno();
+		std::cout<<"Finalizó su turno "<<std::endl;
 		break;
 	}
 }
+
 Juego::~Juego() {
 	delete this->jugadores;
 }

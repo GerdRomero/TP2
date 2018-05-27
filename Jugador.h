@@ -7,18 +7,16 @@
 
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
-#include "Terreno.h"
 #include "Lista.h"
 #include "Almacen.h"
 #include "Semilla.h"
 #include "Mercado.h"
 typedef unsigned short int ui;
 struct Semillas{
-		Semilla *tipoA;
-		Semilla *tipoB;
-		Semilla *tipoC;
+		Semilla tipoA;
+		Semilla tipoB;
+		Semilla tipoC;
 	};
-
 class Jugador {
 private:
 	struct estadoJugador{
@@ -26,13 +24,13 @@ private:
 	int cantAgua;
 	int turnosRestantes;
 	}estado;
-	Semillas *cultivos;
+	Semillas cultivos;
 	Semilla *aSembrar;
 	Lista<Terreno**> *terrenos;
 	Terreno **terrenoEnJuego;
 	Almacen *almacen;
 	Mercado *mercado;
-
+	ui dificultad;
 	ui cantTerrenos;
 	ui posicionTerrenoEnJuego;
 	ui pos[];
@@ -86,10 +84,12 @@ public:
 	int verTurnos(){
 		return this->estado.turnosRestantes;
 	}
+	void mostrarTerreno();
 	virtual ~Jugador();
 private:
 	/*post:leé un archivo de cultivos, crea una lista y setea en tipos de semillas a usar
 	 * (subrutinas datosLista() y cargarCultivosJugador()*/
+
 	void cargarDatos();
 	ui filaTerreno();
 	ui columnaTerreno();
@@ -106,7 +106,7 @@ private:
 	void comprarSemillas();
 	/*pre: tipo de semilla existente en los cultivos del jugador
 	 * post: setea en jugador el cultivo *aSembrar con el tipo de cultivo selleccionado */
-	void elegirSemilla(char tipoSemilla);
+	void elegirSemilla(ui opcion);
 	void comprarTerreno();
 	void comprarCapacAlmacen();
 	/*pre: el costo de alguna compra del menu
@@ -120,11 +120,14 @@ private:
 	/*pre:Se invoca luego del constructor y de datosLista()
 	 * post:Setea las propiedades de Semilla con una referencia a lista
 	 * */
-	void cargarCultivosJugador(Lista<std::string>&datos);
+	void cargarCultivosJugador(Lista<std::string>*datos);
 	/*pre:Invocado luego del contructor
 	 * post:Setea propiedades de Jugador de acuerdo a dificultad*/
 	void cargarDificJugador(ui dificultad);
 	void agregarCultivos(char tipo, ui cant);
+	char semillaValida(ui opcion);
+	void filaColValido();
+	void verificarDimensionTerreno();
 /*post: devuelve terrenoActual(el que esta usando el jugador de la lista de terrenos
  * , solo para hacer pruebas)*/
 	Terreno** obtenerTerreno();
