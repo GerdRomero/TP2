@@ -451,6 +451,9 @@ void Jugador::mostrarTerreno(){
 	}
 }
 
+void Jugador::restarTurnos(){
+	this->turnosRestantes--;
+}
 Jugador::~Jugador() {
 	delete this->almacen;
 	delete this->mercado;
