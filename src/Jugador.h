@@ -42,6 +42,7 @@ public:
 	Jugador(ui dificultad);
 	/*post: setea pos[] con una fila y columna pedida para un terreno*/
 	void pedirPosicion();
+	void restarTurnos();
 
  /*post:opciones de compra, clase Mercado*/
 	void comprar();
