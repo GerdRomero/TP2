@@ -75,12 +75,15 @@ public:
 	void mostrarInfoSemilla();
 	/*post: Castea un tipo de Semilla existente*/
 	char tipoSemillaValida();
+	/*post: Retorna la cantidad de credito que posee el jugador.*/
 	int verCreditos(){
 		return this->estado.creditos;
 	};
+	/*post: Retorna la cantidad de agua que posee el jugador.*/
 	int verCantAgua(){
 		return this->estado.cantAgua;
 	}
+	/*post: Retorna la cantidad de turnos que posee el jugador.*/
 	int verTurnos(){
 		return this->estado.turnosRestantes;
 	}
